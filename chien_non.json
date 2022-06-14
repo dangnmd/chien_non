@@ -1,4 +1,5 @@
 [{
+        "id": 1,
         "holy_name": "Giuse",
         "name": "Nguyễn Việt Anh",
         "birthday": "18.02.2017",
@@ -10,8 +11,10 @@
         "address": "38 đường 8",
         "baptism_day": "02.04.2017",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 2,
         "holy_name": "Maria",
         "name": "Phạm Hoàng Thuỵ Anh",
         "birthday": "15.06.2018",
@@ -23,8 +26,10 @@
         "address": "12 đường 6",
         "baptism_day": "",
         "church": "",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 3,
         "holy_name": "Teresa",
         "name": "Nguyễn Ngọc Phương Anh",
         "birthday": "30.07.2018",
@@ -36,8 +41,10 @@
         "address": "Chung cư Moonlight",
         "baptism_day": "",
         "church": "",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 4,
         "holy_name": "Phero",
         "name": "Nguyễn Minh Thiên Bảo",
         "birthday": "07.07.2017",
@@ -49,8 +56,10 @@
         "address": "14 đường 4",
         "baptism_day": "06.08.2017",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 5,
         "holy_name": "Gioan Bosco",
         "name": "Lưu Chí Bình",
         "birthday": "14.12.2017",
@@ -62,8 +71,10 @@
         "address": "52 Chung cư Bình Minh, đường 1, p.Linh Trung",
         "baptism_day": "03.05.2018",
         "church": "GX Hiển Linh",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 6,
         "holy_name": "Anna",
         "name": "Nguyễn Huỳnh Bảo Châu",
         "birthday": "31.05.2018",
@@ -75,8 +86,10 @@
         "address": "4 Nguyễn Bá Luật",
         "baptism_day": "24.06.2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 7,
         "holy_name": "Maria",
         "name": "Nguyễn Hoàng Linh Đan",
         "birthday": "13.12.2017",
@@ -88,8 +101,10 @@
         "address": "76 đường 9",
         "baptism_day": "07.01.2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1fPyiVHlAAYQ52oq4KVaA9gzY8TeMYXGe",
+        "class": 1
     }, {
+        "id": 8,
         "holy_name": "Catarina",
         "name": "Nguyễn Phương Nhã Đan",
         "birthday": "25.10.2017",
@@ -101,21 +116,25 @@
         "address": "4 đường 8",
         "baptism_day": "03.12.2017",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1f8kekQ3jRvq2Wq5yzou6By0trmKwSI8S",
+        "class": 1
     }, {
+        "id": 9,
         "holy_name": "Anna",
         "name": "Nguyễn Ngọc Bảo Hân",
         "birthday": "11.11.2016",
         "place_of_birth": "TP. Thủ Đức",
         "father": "Anton Nguyễn Quốc Dũng",
         "mother": "Maria Nguyễn Thị Xuân Thu",
-        "mother_phone": "(Mẹ)",
+        "mother_phone": "0766771106",
         "father_phone": "0777752429",
         "address": "11 đường 1",
         "baptism_day": "",
         "church": "",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 10,
         "holy_name": "Giuse",
         "name": "Khuất Phú Hào",
         "birthday": "03.02.2017",
@@ -127,8 +146,10 @@
         "address": "42 đường 2",
         "baptism_day": "01.03.2017",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 11,
         "holy_name": "Giuse",
         "name": "Nguyễn Hoàng Hiếu",
         "birthday": "24.01.2018",
@@ -140,8 +161,10 @@
         "address": "1/4 đường 5",
         "baptism_day": "25.03.2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 12,
         "holy_name": "",
         "name": "Nguyễn Đức Huy",
         "birthday": "14.07.2017",
@@ -153,8 +176,10 @@
         "address": "110C Lavita Garden Trường Thọ",
         "baptism_day": "",
         "church": "GX Thủ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 13,
         "holy_name": "Gioan Bosco",
         "name": "Nguyễn Gia Khánh",
         "birthday": "25.07.2017",
@@ -166,8 +191,10 @@
         "address": "24 đường 9",
         "baptism_day": "03.09.2017",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 14,
         "holy_name": "Matino",
         "name": "Nguyễn Đình Đăng Khôi",
         "birthday": "",
@@ -179,8 +206,10 @@
         "address": "",
         "baptism_day": "",
         "church": "",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 15,
         "holy_name": "Phero",
         "name": "Nguyễn Hoài Đăng Khôi",
         "birthday": "03.09.2018",
@@ -192,8 +221,10 @@
         "address": "18 đường 9",
         "baptism_day": "29.04.2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 16,
         "holy_name": "Teresa",
         "name": "Lê Thảo Linh",
         "birthday": "28.02.2018",
@@ -205,8 +236,10 @@
         "address": "1/11 đường 4",
         "baptism_day": "25.03.2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1g9QoJqnJBML1DixzDLjeBJ9euY4Dczt0",
+        "class": 1
     }, {
+        "id": 17,
         "holy_name": "Teresa",
         "name": "Nguyễn Khánh Ngọc",
         "birthday": "04.03.2019",
@@ -218,8 +251,10 @@
         "address": "8 đường 8",
         "baptism_day": "",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1fLX_xA3YgVkYxPvs5flXIOuIMVbcFyr7",
+        "class": 1
     }, {
+        "id": 18,
         "holy_name": "Giuse",
         "name": "Lê Huỳnh Phúc Nguyên",
         "birthday": "29.12.2017",
@@ -231,8 +266,10 @@
         "address": "80/21 đường 4, kp5, p.Trường Thọ",
         "baptism_day": "2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 19,
         "holy_name": "Cecilia",
         "name": "Nguyễn Huỳnh Gia Nhi",
         "birthday": "19.04.2017",
@@ -244,8 +281,10 @@
         "address": "59 đường 4",
         "baptism_day": "07.05.2017",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1fvDI4-5sJb1UM9lc3L3GaeaiSZlo0U1d",
+        "class": 1
     }, {
+        "id": 20,
         "holy_name": "Maria",
         "name": "Cao Ngọc Chân Phương",
         "birthday": "16.06.2017",
@@ -257,8 +296,10 @@
         "address": "1 đường 7",
         "baptism_day": "02.07.2017",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1fvZ918gWUVRgygZtz4CKo4qitWSSj12x",
+        "class": 1
     }, {
+        "id": 23,
         "holy_name": "",
         "name": "Bùi Đức Thành",
         "birthday": "",
@@ -270,8 +311,10 @@
         "address": "",
         "baptism_day": "",
         "church": "",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 2
     }, {
+        "id": 24,
         "holy_name": "Đaminh",
         "name": "Nguyễn Gia Thành",
         "birthday": "13.02.2018",
@@ -283,8 +326,10 @@
         "address": "32 đường 2",
         "baptism_day": "04.03.2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 25,
         "holy_name": "Teresa",
         "name": "Hoàng Minh Thư",
         "birthday": "16.03.2017",
@@ -296,8 +341,10 @@
         "address": "41/1A đường 4",
         "baptism_day": "04.06.2017",
         "church": "GX Thánh Khang",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 26,
         "holy_name": "Anna",
         "name": "Nguyễn Ngọc Anh Thư",
         "birthday": "23.01.2017",
@@ -309,8 +356,10 @@
         "address": "71 Dân Chủ",
         "baptism_day": "04.03.2017",
         "church": "GX Chi Lăng",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 27,
         "holy_name": "Giuse",
         "name": "Nguyễn Hữu Tú",
         "birthday": "01.04.2018",
@@ -322,8 +371,10 @@
         "address": "1 đường 2",
         "baptism_day": "29.04.2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 28,
         "holy_name": "Maria",
         "name": "Ngô Uyên",
         "birthday": "03.09.2018",
@@ -335,8 +386,10 @@
         "address": "70 đường 4",
         "baptism_day": "28.10.2018",
         "church": "GX Từ Đức",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
+        "class": 1
     }, {
+        "id": 29,
         "holy_name": "Clara",
         "name": "Nguyễn Thới Tường Vi",
         "birthday": "14.02.2019",
@@ -348,8 +401,10 @@
         "address": "",
         "baptism_day": "30.03.2019",
         "church": "GX Thánh Giuse Thợ",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1f7N-4Vh9cLX7TC3j1Rln0pYKnkrsy7ei",
+        "class": 1
     }, {
+        "id": 30,
         "holy_name": "Cecilia",
         "name": "Phạm Trần Nguyệt Anh",
         "birthday": "08.10.2017",
@@ -361,8 +416,10 @@
         "address": "39 Dân Chủ",
         "baptism_day": "",
         "church": "",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1gDlFoK4qjBHdDj_XotA8XgJ3wgajNsdy",
+        "class": 1
     }, {
+        "id": 31,
         "holy_name": "Maria",
         "name": "Nguyễn Hoàng Phương Uyên",
         "birthday": "16.02.2018",
@@ -374,6 +431,7 @@
         "address": "21 đường 2",
         "baptism_day": "",
         "church": "",
-        "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL"
+        "image": "https://drive.google.com/uc?id=1fwaPVtxJagXSkQzLpZ9DMUbrd5Bn4M4f",
+        "class": 1
     }
 ]
