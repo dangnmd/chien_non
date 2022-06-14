@@ -12,7 +12,7 @@
         "baptism_day": "02.04.2017",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 2,
         "holy_name": "Maria",
@@ -27,7 +27,7 @@
         "baptism_day": "",
         "church": "",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 3,
         "holy_name": "Teresa",
@@ -42,7 +42,7 @@
         "baptism_day": "",
         "church": "",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 4,
         "holy_name": "Phero",
@@ -57,7 +57,7 @@
         "baptism_day": "06.08.2017",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 5,
         "holy_name": "Gioan Bosco",
@@ -72,7 +72,7 @@
         "baptism_day": "03.05.2018",
         "church": "GX Hiển Linh",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 6,
         "holy_name": "Anna",
@@ -87,7 +87,7 @@
         "baptism_day": "24.06.2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 7,
         "holy_name": "Maria",
@@ -102,7 +102,7 @@
         "baptism_day": "07.01.2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1fPyiVHlAAYQ52oq4KVaA9gzY8TeMYXGe",
-        "class": 1
+        "grade": 1
     }, {
         "id": 8,
         "holy_name": "Catarina",
@@ -117,7 +117,7 @@
         "baptism_day": "03.12.2017",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1f8kekQ3jRvq2Wq5yzou6By0trmKwSI8S",
-        "class": 1
+        "grade": 1
     }, {
         "id": 9,
         "holy_name": "Anna",
@@ -132,7 +132,7 @@
         "baptism_day": "",
         "church": "",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 10,
         "holy_name": "Giuse",
@@ -147,7 +147,7 @@
         "baptism_day": "01.03.2017",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 11,
         "holy_name": "Giuse",
@@ -162,7 +162,7 @@
         "baptism_day": "25.03.2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 12,
         "holy_name": "",
@@ -177,7 +177,7 @@
         "baptism_day": "",
         "church": "GX Thủ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 13,
         "holy_name": "Gioan Bosco",
@@ -192,7 +192,7 @@
         "baptism_day": "03.09.2017",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 14,
         "holy_name": "Matino",
@@ -207,7 +207,7 @@
         "baptism_day": "",
         "church": "",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 15,
         "holy_name": "Phero",
@@ -222,7 +222,7 @@
         "baptism_day": "29.04.2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 16,
         "holy_name": "Teresa",
@@ -237,7 +237,7 @@
         "baptism_day": "25.03.2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1g9QoJqnJBML1DixzDLjeBJ9euY4Dczt0",
-        "class": 1
+        "grade": 1
     }, {
         "id": 17,
         "holy_name": "Teresa",
@@ -252,7 +252,7 @@
         "baptism_day": "",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1fLX_xA3YgVkYxPvs5flXIOuIMVbcFyr7",
-        "class": 1
+        "grade": 1
     }, {
         "id": 18,
         "holy_name": "Giuse",
@@ -267,7 +267,7 @@
         "baptism_day": "2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 19,
         "holy_name": "Cecilia",
@@ -282,7 +282,7 @@
         "baptism_day": "07.05.2017",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1fvDI4-5sJb1UM9lc3L3GaeaiSZlo0U1d",
-        "class": 1
+        "grade": 1
     }, {
         "id": 20,
         "holy_name": "Maria",
@@ -297,7 +297,7 @@
         "baptism_day": "02.07.2017",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1fvZ918gWUVRgygZtz4CKo4qitWSSj12x",
-        "class": 1
+        "grade": 1
     }, {
         "id": 23,
         "holy_name": "",
@@ -312,7 +312,7 @@
         "baptism_day": "",
         "church": "",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 2
+        "grade": 2
     }, {
         "id": 24,
         "holy_name": "Đaminh",
@@ -327,7 +327,7 @@
         "baptism_day": "04.03.2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 25,
         "holy_name": "Teresa",
@@ -342,7 +342,7 @@
         "baptism_day": "04.06.2017",
         "church": "GX Thánh Khang",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 26,
         "holy_name": "Anna",
@@ -357,7 +357,7 @@
         "baptism_day": "04.03.2017",
         "church": "GX Chi Lăng",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 27,
         "holy_name": "Giuse",
@@ -372,7 +372,7 @@
         "baptism_day": "29.04.2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 28,
         "holy_name": "Maria",
@@ -387,7 +387,7 @@
         "baptism_day": "28.10.2018",
         "church": "GX Từ Đức",
         "image": "https://drive.google.com/uc?id=1MMYLHXlmtQbqqvePG4m8ECAbg2YX5TzL",
-        "class": 1
+        "grade": 1
     }, {
         "id": 29,
         "holy_name": "Clara",
@@ -402,7 +402,7 @@
         "baptism_day": "30.03.2019",
         "church": "GX Thánh Giuse Thợ",
         "image": "https://drive.google.com/uc?id=1f7N-4Vh9cLX7TC3j1Rln0pYKnkrsy7ei",
-        "class": 1
+        "grade": 1
     }, {
         "id": 30,
         "holy_name": "Cecilia",
@@ -417,7 +417,7 @@
         "baptism_day": "",
         "church": "",
         "image": "https://drive.google.com/uc?id=1gDlFoK4qjBHdDj_XotA8XgJ3wgajNsdy",
-        "class": 1
+        "grade": 1
     }, {
         "id": 31,
         "holy_name": "Maria",
@@ -432,6 +432,6 @@
         "baptism_day": "",
         "church": "",
         "image": "https://drive.google.com/uc?id=1fwaPVtxJagXSkQzLpZ9DMUbrd5Bn4M4f",
-        "class": 1
+        "grade": 1
     }
 ]
