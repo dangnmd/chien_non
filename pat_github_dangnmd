@@ -10,3 +10,15 @@ dyld: Library not loaded: @rpath/FBLPromises.framework/FBLPromises
 	/private/vadyld: launch, loading dependent libraries
 DYLD_LIBRARY_PATH=/usr/lib/system/introspection
 DYLD_INSERT_LIBRARIES=/Developer/usr/lib/libBacktraceRecording.dylib:/Developer/usr/lib/libMainThreadChecker.dylib:/Developer/Library/PrivateFrameworks/DTDDISupport.framework/libViewDebuggerSupport.dylib
+
+-------
+
+dyld: Library not loaded: @rpath/Flutter.framework/Flutter
+  Referenced from: /private/var/containers/Bundle/Application/0B7BE975-DF18-449E-BD59-C598178E995E/Runner.app/Runner
+  Reason: no suitable image found.  Did find:
+	/private/var/containers/Bundle/Application/0B7BE975-DF18-449E-BD59-C598178E995E/Runner.app/Frameworks/Flutter.framework/Flutter: code signature invalid for '/private/var/containers/Bundle/Application/0B7BE975-DF18-449E-BD59-C598178E995E/Runner.app/Frameworks/Flutter.framework/Flutter'
+
+dyld: launch, loading dependent libraries
+DYLD_LIBRARY_PATH=/usr/lib/system/introspection
+DYLD_INSERT_LIBRARIES=/Developer/usr/lib/libBacktraceRecording.dylib:/Developer/usr/lib/libMainThreadChecker.dylib:/Developer/Library/PrivateFrameworks/DTDDISupport.framework/libViewDebuggerSupport.dylib
+(lldb) 
