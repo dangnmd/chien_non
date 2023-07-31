@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chiên Con</title>
+  </head>
+	<style>
+		a{
+			font-size: 25px;
+			display: block;
+			margin: 10px;
+		}
+		.col_left{
+			padding-bottom:5px;
+		}
+		.col_title{
+			width: 150px;
+			display: inline-block;
+		}
+	</style>
+	<script>
+	
+	function tinhtien(){
+		var rs = document.getElementById('rs');
+		rs.innerHTML = '';
+		var vhd = document.getElementById('vhd').value;
+		var va = 365 * vhd;
+		var ls = document.getElementById('ls').value ;
+		var period = document.getElementById('period').value ;
+		var profit_total = 0;
+		var formatter = new Intl.NumberFormat('en-US', {
+		  maximumFractionDigits: 2,
+		});
+		var txt_title = 'Mỗi ngày '+ formatter.format(vhd) +' => 1 năm(365 ngày): '+ formatter.format(va) +' với lãi suất '+ ls +'% thì kết quả tiết kiệm như sau:';
+		var title_node = document.createTextNode(txt_title);
+		var p_node = document.createElement("p");
+		p_node.appendChild(title_node);
+		rs.appendChild(p_node);
+		for(i=1;i<=period;i++)
+		{
+			var amount = (profit_total + (va * i));
+			var profit_by_period = amount * ls / 100;
+			profit_total += profit_by_period;
+			var log = "năm "+i+" \t-- in Bank: "+formatter.format(amount+ profit_by_period)+" \t- profit_by_period: "+formatter.format(profit_by_period)+"";
+			// console.log("năm %s \t-- in Bank: %s \t- profit_by_period: %s", i,formatter.format(amount+ profit_by_period), formatter.format(profit_by_period));
+			var li_node = document.createElement("li");
+			var log_node = document.createTextNode(log);
+			li_node.appendChild(log_node);
+			rs.appendChild(li_node);
+		}
+		var summary_amount =  profit_total + (va*period);
+		// console.log("Bạn sẽ có %s vnd sau %s năm",formatter.format(summary_amount), period);
+		var txt_summary = 'Bạn sẽ có '+formatter.format(summary_amount)+' vnd sau '+period+' năm' ;
+		var summary_node = document.createTextNode(txt_summary);
+		var s_p_node = document.createElement("p");
+		s_p_node.appendChild(summary_node);
+		rs.appendChild(s_p_node);
+	}
+	</script
+  <body>
+    <div class='col_left' id='test'><span class='col_title'>Số vốn mỗi ngày:</span><input id='vhd' value='50000'></input></div>
+	<div class='col_left'><span class='col_title'>Lãi suất:</span><input id='ls' value='7'></input></div>
+	<div class='col_left'><span class='col_title'>Số năm tiết kiệm:</span><input id='period' value='10'></input></div>
+	<div class='col_left'><button onclick='tinhtien()'>Tính tiền</button></div>
+	<br />
+	<div id='rs'>
+	</div>
+  </body>
+</html>
