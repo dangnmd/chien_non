@@ -9,6 +9,9 @@
 			display: block;
 			margin: 10px;
 		}
+		li{
+			padding: 5px 3px;
+		}
 		.col_left{
 			padding-bottom:5px;
 		}
@@ -19,8 +22,9 @@
 		.line_color{
 			background-color: #e9e9ed;
 		}
-		li{
-			padding: 5px 3px;
+		.summary{
+			color: blue;
+			font-weight: 600;
 		}
 	</style>
 	<script>
@@ -52,7 +56,6 @@
 			if(i%2==0){
 				li_node.className = 'line_color';
 			}
-			
 			var log_node = document.createTextNode(log);
 			li_node.appendChild(log_node);
 			rs.appendChild(li_node);
@@ -62,6 +65,7 @@
 		var txt_summary = 'Bạn sẽ có '+formatter.format(summary_amount)+' vnd sau '+period+' năm' ;
 		var summary_node = document.createTextNode(txt_summary);
 		var s_p_node = document.createElement("p");
+		s_p_node.className = 'summary';
 		s_p_node.appendChild(summary_node);
 		rs.appendChild(s_p_node);
 	}
