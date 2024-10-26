@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+			<title>Các Thánh Bổn Mạng</title>
+		</head>
+		<style>
+			.title{
+			margin: auto;
+			width: 90%;
+			padding: 40px 0px 10px 0px;
+			text-align: center;
+			font-size: 70px;
+			}
+			.center{
+			background-color: #f1f1f1;
+			color: #0C567B;
+			font-size: 50px;
+			width: 75%;
+			font-weight: 700;
+			margin: auto;
+			padding: 20px 40px;
+			text-align: justify;
+			}
+			#kinhtin .title{
+			color: blue;
+			}
+			#kinhcay .title{
+			color: green;
+			}
+			#kinhmen .title{
+			color: #e81d43
+			}
+			#kinhtin .center{
+			color: #0C567B;
+			}
+			#kinhcay .center{
+			color: #084b08;
+			}
+			#kinhmen .center{
+			color: #a81631;//#800e23;
+			}
+			.contentmain{
+			background: white none repeat scroll 0 0;
+			color: black;
+			height: 270px;
+			width: 22%;
+			float: left;
+			text-align: right;
+			}
+			.contentCenter{
+			background: white none repeat scroll 0 0;
+			color: black;
+			height: 270px;
+			width: 50%;
+			float: left;
+			text-align: center;
+			}
+			.contentRight{
+			background: white none repeat scroll 0 0;
+			color: black;
+			height: 270px;
+			width: 28%;
+			float: right;
+			text-align: left;
+			margin: auto;
+			}
+			.timer{
+			margin-top: 100px;
+			
+			}
+			.second{
+			margin-left:40px;
+			}
+			
+/* Styling an indeterminate progress bar */
+
+progress:not(value) {
+  /* Add your styles here. As part of this walkthrough we will focus only on determinate progress bars. */
+}
+
+/* Styling the determinate progress element */
+
+progress[value] {
+  /* Get rid of the default appearance */
+  appearance: none;
+  
+  /* This unfortunately leaves a trail of border behind in Firefox and Opera. We can remove that by setting the border to none. */
+  border: none;
+  
+  /* Add dimensions */
+  width: 100%; height: 20px;
+  
+  /* Although firefox doesn't provide any additional pseudo class to style the progress element container, any style applied here works on the container. */
+    background-color: whiteSmoke;
+    border-radius: 3px;
+    box-shadow: 0 2px 3px rgba(0,0,0,.5) inset;
+  
+  /* Of all IE, only IE10 supports progress element that too partially. It only allows to change the background-color of the progress value using the 'color' attribute. */
+  color: royalblue;
+  
+  position: relative;
+  margin: 0 0 1.5em; 
+}
+
+/*
+Webkit browsers provide two pseudo classes that can be use to style HTML5 progress element.
+-webkit-progress-bar -> To style the progress element container
+-webkit-progress-value -> To style the progress element value.
+*/
+
+progress[value]::-webkit-progress-bar {
+  background-color: whiteSmoke;
+  border-radius: 3px;
+  box-shadow: 0 2px 3px rgba(0,0,0,.5) inset;
+}
+
+progress[value]::-webkit-progress-value {
+  position: relative;
+  
+  background-size: 35px 20px, 100% 100%, 100% 100%;
+  border-radius:3px;
+  
+  /* Let's animate this */
+  animation: animate-stripes 5s linear infinite;
+}
+
+@keyframes animate-stripes { 100% { background-position: -100px 0; } }
+
+/* Let's spice up things little bit by using pseudo elements. */
+
+progress[value]::-webkit-progress-value:after {
+  /* Only webkit/blink browsers understand pseudo elements on pseudo classes. A rare phenomenon! */
+  content: '';
+  position: absolute;
+  
+  width:5px; height:5px;
+  top:7px; right:7px;
+  
+  background-color: white;
+  border-radius: 100%;
+}
+
+/* Firefox provides a single pseudo class to style the progress element value and not for container. -moz-progress-bar */
+
+progress[value]::-moz-progress-bar {
+  /* Gradient background with Stripes */
+  background-image:
+  -moz-linear-gradient( 135deg,
+                           transparent,
+                           transparent 33%,
+                           rgba(0,0,0,.1) 33%,
+                           rgba(0,0,0,.1) 66%,
+                           transparent 66%),
+    -moz-linear-gradient( top,
+                            rgba(255, 255, 255, .25),
+                            rgba(0,0,0,.2)),
+     -moz-linear-gradient( left, #09c, #f44);
+  
+  background-size: 35px 20px, 100% 100%, 100% 100%;
+  border-radius:3px;
+  
+  /* Firefox doesn't support CSS3 keyframe animations on progress element. Hence, we did not include animate-stripes in this code block */
+}
+
+/* Fallback technique styles */
+.progress-bar {
+  background-color: whiteSmoke;
+  border-radius: 3px;
+  box-shadow: 0 2px 3px rgba(0,0,0,.5) inset;
+
+  /* Dimensions should be similar to the parent progress element. */
+  width: 100%; height:20px;
+}
+
+.progress-bar span {
+  background-color: royalblue;
+  border-radius: 3px;
+  
+  display: block;
+  text-indent: -9999px;
+}
+
+p[data-value] { 
+  
+  position: relative; 
+}
+
+/* The percentage will automatically fall in place as soon as we make the width fluid. Now making widths fluid. */
+
+p[data-value]:after {
+  content: attr(data-value) '%';
+  position: absolute; right:0;
+}
+.html5::-webkit-progress-value{
+  /* Gradient background with Stripes */
+  background-image:
+  -webkit-linear-gradient( 135deg,
+                           transparent,
+                           transparent 33%,
+                           rgba(0,0,0,.1) 33%,
+                           rgba(0,0,0,.1) 66%,
+                           transparent 66%),
+    -webkit-linear-gradient( top,
+                            rgba(255, 255, 255, .25),
+                            rgba(0,0,0,.2)),
+     -webkit-linear-gradient( left, #09c, #f44);
+}
+
+.html5::-moz-progress-bar{
+  /* Gradient background with Stripes */
+  background-image:
+  -moz-linear-gradient( 135deg,
+                           transparent,
+                           transparent 33%,
+                           rgba(0,0,0,.1) 33%,
+                           rgba(0,0,0,.1) 66%,
+                           transparent 66%),
+    -moz-linear-gradient( top,
+                            rgba(255, 255, 255, .25),
+                            rgba(0,0,0,.2)),
+     -moz-linear-gradient( left, #09c, #f44);
+}
+.jquery::-moz-progress-bar{
+  /* Gradient background with Stripes */
+  background-image:
+  -moz-linear-gradient( 135deg,
+                           transparent,
+                           transparent 33%,
+                           rgba(0,0,0,.1) 33%,
+                           rgba(0,0,0,.1) 66%,
+                           transparent 66%),
+    -moz-linear-gradient( top,
+                            rgba(255, 255, 255, .25),
+                            rgba(0,0,0,.2)),
+     -moz-linear-gradient( left, #09c, #690);
+}
+
+.circle {
+  background: #FF1493;
+  margin: auto;
+  clip-path: circle(50%);
+  height: 3em;
+  width: 3em;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size: 30px;
+  color: white;
+}
+
+#countdown{
+font-size: 40px;
+text-align: center;
+}
+
+
+		</style>
+		<script>
+			function doi_kinh(openkinh, closekinh1, closekinh2){
+			document.getElementById(openkinh).style.display = "block";
+			document.getElementById(closekinh1).style.display = "none";
+			document.getElementById(closekinh2).style.display = "none";
+			}
+			
+			function count_down(){
+				var second = $('#second').val();
+				var timeleft = $('#second').val();
+				$('#progressBar').attr('max', second);
+				//var timeleft = 10;
+				let ding = new Audio('ding.mp3');
+				let tick = new Audio('tick.mp3');
+				var downloadTimer = setInterval(function(){
+				  if(timeleft <= 0){
+					clearInterval(downloadTimer);
+					ding.play();
+				  }
+				  else{
+					tick.currentTime = 0;
+					tick.play();  
+				  }
+				  document.getElementById("progressBar").value = second - timeleft;
+				  document.getElementById("countdown").innerHTML = timeleft + " giây";
+				  timeleft -= 1;
+				  
+				  
+				}, 1000);
+			}
+			
+			function show_saint(st){
+				$('.saint').hide();
+				$('.'+st+'').show();
+				
+			}
+			
+			function change_button_color(){
+				$('button').css('color', "white");
+			}
+			
+		</script
+  <body>
+		<div id="kinhtin" class="kinh" style="display: block; padding: 10px 50px">
+			<div class="contentmain">
+			<span class='second'>
+						<input id='second' value='20'></input>
+					</span>
+				<button onclick="show_saint('maria')">Maria</button>
+				<button onclick="show_saint('giuse')">Giuse</button>
+				<button onclick="show_saint('anna')">Anna</button>
+				<button onclick="show_saint('phero')">Phero</button>
+				<button onclick="show_saint('madalena')">Madalena</button>
+				<button onclick="show_saint('phanxico')">Phanxico</button>
+				<button onclick="show_saint('daminh')">Đaminh</button>
+				<button onclick="show_saint('vincente')">Vincente</button>
+				<button onclick="show_saint('martino')">Martino</button>
+				<button onclick="show_saint('teresa')">Teresa</button>
+				<button onclick="show_saint('savio')">Savio</button>
+				<button onclick="show_saint('me_tc')">Mẹ TC</button>
+				<button onclick="show_saint('phaolo')">Phaolo</button>
+				<button onclick="change_button_color()">hide</button>
+				
+				<div class='timer'>
+					<div class="circle" onclick='count_down()'>
+						<div class="">
+						  Start
+						</div>
+					</div>
+					<br />
+					<br />
+					<progress max='10' value="0" class="html5" id="progressBar">
+      <!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
+					  <div class="progress-bar">
+						<span style="width: 80%">80%</span>
+					  </div>
+					</progress>
+					<div id="countdown"></div>
+					
+				</div>
+			</div>
+			<div class="contentCenter">
+				<image class="maria saint" src="https://lh3.googleusercontent.com/pw/AP1GczPAcAMiu5NloVs1yoJPJNoDmO1ax4m3lV1th78ldz1eHJqWMRzZNvv2SlC39nl21J4Nz6IUxS5lBKcukqKmDimhYJw9ovuRXAJtSLf56NxUV8icl9fOx_QKbbgpLqO8GFR1E3OznqSnXgDu9GHJUfzQqQ=w756-h945-s-no-gm?authuser=0" />
+				<image class="giuse saint" src="https://lh3.googleusercontent.com/pw/AP1GczNNtQ8Ko-iHlCsqdQurIjLhiD5cFYAk0_7Xn91bqkJ7HfVFdO0gZG0nAZVqPVphGdBlc4id_CmGKhe5OR0c4ny_3iSNaYjjiFyiOuo8dBT6dgw_nWY0uZAYmxl8Bodxxs32gjqVWHyTeazXwdjZUuW6Wg=w467-h600-s-no-gm?authuser=0" />
+				<image class="anna saint" src="https://lh3.googleusercontent.com/pw/AP1GczOPL0GvNQj2biUJVLjO05TzC90aNrqVrWgYoBa8hzSpvo0h1zUTW8Y1oXT5m8C_3z2tzOL_MEgTUBx56ru0R5w68dOiTK-PUDVR0nCNVXJS1ZIKxqWwmhmXZcUTYPZs1olJIk3lvxTjKBvVKjghVKiY4g=w648-h890-s-no-gm?authuser=0" />
+				<image class="phero saint" src="https://lh3.googleusercontent.com/pw/AP1GczPTzCuHHoEO_LfjMnz-9wtWZDBK3yI_BJ_WbdnqEZTBJ1Z-da0kwkx5KJMsXsUF0b0lAGZoFj3TMNgPjZwJgLR68YDgw4tvkqUJ6GxFvMnFXQrpnSd8u8Q5SBrqFcxHlTvzr1JcWIA4XWZz0ihJkmA7HQ=w703-h945-s-no-gm?authuser=0" />
+				<image class="madalena saint" src="https://lh3.googleusercontent.com/pw/AP1GczOSavaWE7HrXi17xcE3fnJpamProZnI_kxezUKznDujz_l-E7RSMFsky0MGp9mDQImU77kZYE0IJZmiVQhMKw_rmGpF11D0V4Jc9x2AC-1Tro6bmlfnkHiZfGe8eaCAK8L92QiuduAQpSezib47fxx3HA=w741-h900-s-no-gm?authuser=0" />
+				<image class="phanxico saint" src="https://lh3.googleusercontent.com/pw/AP1GczMqSgUc4jN8HQo3FkyPJrZdi4dnHdseHps0cS3ryCELOlIXSknJ2VKspH7V78cboyXQIwtm3Wk1Z6HdiWODM5XQV6wvAoE0XK0oYi9VGTORIc9VBjBEUcwTAM-raiSX7UEYtMDwYNwvFvH9wQz1-db1vQ=w714-h945-s-no-gm?authuser=0" />
+				<image class="daminh saint" src="https://lh3.googleusercontent.com/pw/AP1GczOmU-2owGH3L65hCZMMrl3kf7Z-mLE5l-xU9rBL3xWfygugRk8xEJj0MjBEgeaVBCXM9GmLWtwaXAfczF4mqXm4sbmkfxsVlq68cRKeid8HIzHtiv2fFcmBeRu4UveJQ0R34YMzU0eqFoYkADzLYNVLrA=w526-h679-s-no-gm?authuser=0" />
+				<image class="vincente saint" src="https://lh3.googleusercontent.com/pw/AP1GczPho6jUU52EltrOrpogZYo32mLLYy_Uzefrn4JRKT2ymqry4dKsqb2q-ftRdV2PmB8Bf_0SbvGm4lNSvoeckYJw9gufthVzHhTPswQOEtL4YTjElkN1cWm3wZx8K-h_Qm2Pigox4OrYOZR9IFb2e-ZHeg=w541-h945-s-no-gm?authuser=0" />
+				<image class="martino saint" src="https://lh3.googleusercontent.com/pw/AP1GczN_2bKmPrW7cDR5pnF3ltdVQetFn1vDJ0fPs6IsCKrz-ef_MOrffzXfsqT11nHBYt0FbAcQ5ko5kbVwz0h2wfezexw5BPVBWhjo2oNQeTT_0HiU3b5lWJysxUSvPANE0KeB3m69HkzQE0swMazJ2MUVEA=w709-h945-s-no-gm?authuser=0" />
+				<image class="teresa saint" src="https://lh3.googleusercontent.com/pw/AP1GczNe-86V_yP_GrT5ye6m6mYd_Dh_Daku5d5NnOklFRXVKOPMRnxlywO_JEb2SSmoOvPn8HpMwINMpJVsxMjRzF0rTS1C-8Ur3MA3Y7iLdM3W-KhXyyIgfFNpfXeeON4jtnTP47j1bRMyMWp0QC4JiP0TdA=w812-h945-s-no-gm?authuser=0" />
+				<image class="savio saint" src="https://lh3.googleusercontent.com/pw/AP1GczNMAVYYCkSTQDFsCQueA-ZUpQOT8DvctjM5khNDRbDp1gtX82mlKHZvNlfkbvCNr8z5sAE2dnEFVEaMLSdqd5bWJvkHWzMSNZBfykgUvf3PhMBaLELW7qzp611x--ySLE-MV7__E0D11LFFKgSJf8pIOg=w561-h945-s-no-gm?authuser=0" />
+				<image class="me_tc saint" src="https://lh3.googleusercontent.com/pw/AP1GczMzDlYePK35pAROQkV2aIY-XDlEJrqHQd7KFPu0jlfTHbvARGep0GjN3rsLzWs4ndamWyxDhpLp_9o9VwDb4XW-5anmRZRl7Fjq4wIuoFq-yZzI2jLzp4JKJi-zalUZ7P4l0Yrv00S6v_G_NUgJGTRQ9g=w840-h945-s-no-gm?authuser=0" />
+				<image class="phaolo saint" src="https://lh3.googleusercontent.com/pw/AP1GczOpqa5a0IjqlNpX12i6JLmsALtQr8MXXnpiGGKziMiKFJRSJePTgMzTrAEnTtBlrdpq270w129jeaAWO2OwEWCRbHHiUnkOnvfq-8T5hM6jBOtk19ggZDMiv7YrFavgW9LimdBGVTfmWu4S3w-XXaqHuA=w590-h827-s-no-gm?authuser=0" />
+			</div>
+			<div class="contentRight">
+			<div class="maria saint">
+				Hiện ra 6 lần tại Fatima với 3 bé từ 13.5 -> 13.10
+				<br />
+				<br />
+				13/5,6,7 - 19/8 - 13/9,10
+				<br />
+				<br />
+				Lần hạt Mân Côi cầu cho chấm dứt chiến tranh
+				<br />
+				<br />
+				Lần cuối Đám đông đã có thể nhìn thẳng vào mặt trời và thấy mặt trời nhảy múa, tung ra các chùm tia sáng nhiều màu. Mặt trời dường như xuống thấp gần trái đất, khiến đám đông sợ hãi.
+				<br />
+				<br />
+				7/10 Đức Mẹ Mân Côi
+				<br />
+				1/1 Đức Mẹ Mẹ Thiên Chúa
+				<br />
+				15/8 Đức Mẹ hồn xác lên trời
+				<br />
+				8/12 Đức Maria vô nhiễm nguyên tội
+				
+			</div>
+			<div class="giuse saint">
+				Con người của lao động, sẵn sàng thực thi ý Chúa, can đảm nhận làm ba nuôi Chúa Giesu
+				<br />
+				<br />
+				19/3 Kính Thánh Giuse
+			</div>
+			<div class="anna saint">
+				Thánh Anna là mẹ của Đức Bà Maria. bà chờ rất lâu mới có được Maria và bà đã dâng lên cho Chúa.
+				<br />
+				<br />
+				26/7 ngày kính
+			</div>
+			<div class="phero saint">
+				Được Chúa giao phó lại Hội Thánh khi Ngài về trời. Là Đức Giáo Hoàng đầu tiên
+				<br />
+				<br />
+				29/6
+			</div>
+			<div class="madalena saint">
+				Ngài đã từ bõ mọi tội lỗi để đi theo Chúa, Ngài là một trong những người đầu tiên nhận ra Chúa Giesu đã chết và sống lại
+				<br />
+				<br />
+				22/7
+			</div>
+			<div class="phanxico saint">
+				Này anh sói, anh lại đây, nhân danh Chúa Kitô tôi truyền cho anh đừng hãm hại ai nữa.
+				<br />
+				<br />
+				Này anh sói, anh đã gây ra không biết bao thiệt hại cho vùng này. Anh giết hại những tạo vật của Chúa mà không có phép Ngài. Anh không những sát hại những súc vật mà còn giết hại cả loài người là hình ảnh của Thiên Chúa nữa. Anh đáng bị trừng phạt vì tội giết người. Ai cũng ca thán kêu ca vì anh. Nhưng tôi, tôi muốn giải hoà giữa anh và họ để anh không còn hãm hại ai nữa.
+				<br />
+				<br />
+				ngày ngày ra vào bất cứ nhà nào như chính nhà của nó, nó không làm hại ai mà cũng chẳng ai hãm hại nó, sau 2 năm, con vật qua đời giữa tiếng thương khóc của dân Agodio.
+				<br />
+				<br />
+				4/10
+				<br />
+				<br />
+				Sáng lập dòng Phanxico
+				<br />
+				<br />
+				Ngài được Chúa in năm dấu thánh của Chúa trên chân tay và cạnh sườn của Ngài. Phanxicô đã sống một cuộc tử đạo này trong hai năm trời
+			</div>
+			<div class="daminh saint">
+				khi đang mang thai, bà cố mơ thấy mình cho chào đời một con chó ngậm bó đuốc đang cháy sáng và mang lửa đến khắp thế giới. Rồi trong ngày thánh nhân rửa tội, mẹ đỡ đầu trông thấy trên trán chú bé một ngôi sao sáng, chiếu tỏa chung quanh
+				<br />
+				<br />
+				Ngài chỉ “nói với Chúa, về Chúa và trong Chúa.
+				<br />
+				<br />
+				Bằng lời giảng sốt sắng, ngài đem Chúa đến cho người đời và nhờ sức mạnh của lời cầu nguyện, ngài dẫn đưa người đời về với Chúa
+				<br />
+				<br />
+				Tôi không còn tiền, nhưng này chị hãy dẫn tôi nộp cho người ta, để chuộc em chị về.
+				<br />
+				<br />
+				8/8
+				<br />
+				<br />
+				Sáng lập dòng Đaminh
+			</div>
+			<div class="vincente saint">
+				Ngài chủ yếu nói về tội lỗi, hỏa ngục, sự sống đời sau và ngày chung thẩm gần kề
+				<br />
+				<br />
+				Ngài được ơn làm nhiều phép lạ và nói tiên tri
+				<br />
+				<br />
+				Ngài gặp Phanxica và nói hài nhi chị đang cưu mang trong tương lai sẽ trở thành Giáo hoàng.
+				<br />
+				<br />
+				gặp lại Phanxica và nói Hãy chăm sóc con trẻ cẩn thận. Em sẽ là Giáo hoàng và sẽ phong thánh cho cha.
+				<br />
+				<br />
+				gặp lại Phanxica lần nữa. Hãy hôn chân con trẻ, em sẽ trở thành Giáo hoàng và sẽ phong thánh cho cha
+				<br />
+				<br />
+				gặp thêm 1 lần nữa. Hãy dạy dỗ con trẻ thật tốt, hãy cho em đi học vì một ngày nào đó em sẽ trở thành Giáo hoàng và sẽ đem lại vinh quang cho cha.
+				<br />
+				<br />
+				Đứa trẻ lớn thành sinh viên và nói Thánh Vinh Sơn: Cha giảng thật hay, rồi đây cha sẽ là một vị thánh.
+				<br />
+				<br />
+				Ngài đáp: Chính con sẽ phong thánh cho cha.
+				<br />
+				<br />
+				Alphonsus Borgia, tức là Đức Giáo Hoàng Calixtus III, vào ngày 29 tháng 6 năm 1455, long trọng tuyên dương hiển thánh cho ngài
+				<br /> 
+				<br />
+				5/4
+				<br />
+				<br />
+				Chúa hỏi:
+
+- Con có biết tại sao nhiều người trở lại vậy không?
+
+- Thưa Chúa! Vì Chúa thương họ
+
+- Đúng. Nhưng con biết động lực nào thúc đẩy họ trở lại không?
+
+- Nhờ ơn Chúa.
+
+- Đúng vậy con ạ. Ơn của Ta đến với họ qua lời cầu nguyện của thầy vẫn cùng đồng hành với con đó. Trong khi con rao giảng, thầy cầu nguyện. Lời cầu nguyện của thầy thúc đẩy họ.
+			</div>
+			<div class="martino saint">
+			Ông Thánh da đen
+			<br />
+			<br />
+			Ngài rất thương người, Ngài bán tất cả để giúp đỡ người nghèo. Ngài chữa bệnh cho họ, qua tay Ngài, ly nước bình thường cũng thành thuốc nhiệm mầu. Ngài làm nhiều công trạng nhưng tất cả Ngài đều quy về Chúa
+			<br />
+			<br />
+			Cha bề trên muốn bán báu vật để trả nợ thì Ngài xung phong nói bán Ngài đi để trả nợ. Con chỉ là một đứa da đen khốn khổ thôi, con thuộc một Dòng tu đã đối xử tốt với con trong lúc con lại thật vô tích sự đối với nhà dòng! Vậy hãy bán con đi! Xin ban cho con ân huệ đó, con xin cha đấy, và có thể sẽ có người bắt con làm những việc mà lẽ ra con đã phải làm!
+			<br />
+			<br />
+			3/11
+			</div>
+			<div class="teresa saint">
+				Ngài làm những việc tầm thường bằng cách phi thường với lòng yêu mến Chúa
+				<br />
+				<br />
+				Với lòng kính mến Chúa thì dù cúi xuống đất nhặt một cây kim nhỏ, tôi cũng cứu được một linh hồn
+				<br />
+				<br />
+				Chết khi 24 tuổi. Lời cuối: Ôi lạy Chúa trời con, con yêu mến Chúa
+				<br />
+				<br />
+				1/10
+			</div>
+			<div class="savio saint">
+				Đọc kinh sáng tối từ nhỏ. Ngoan ngoãn vâng lời ba mẹ. Đi lễ hằng ngày, giúp lễ hăng say. 7 tuổi đã thuộc giáo lý và được rước Chúa
+				<br />
+				<br />
+				Đi lể thường xuyên.
+				Bạn của tôi là Chúa Giêsu và Mẹ Maria,
+				Thà chết chẳng thà phạm tội.
+				<br />
+				<br />
+				Đi học 1 mình 18 cây số.
+				Cháu đâu có đi một mình, có Thiên Thần Bản mệnh cùng đi với cháu mà!
+				<br />
+				<br />
+				6/5
+			</div>
+			<div class="me_tc saint"></div>
+			<div class="phaolo saint"></div>
+				
+			</div>
+			<div style="display:block;">
+			</div>
+			
+		</div>
+		
+	</body>
+</html>
