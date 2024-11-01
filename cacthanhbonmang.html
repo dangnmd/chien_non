@@ -5,73 +5,9 @@
 			<title>Các Thánh Bổn Mạng</title>
 		</head>
 		<style>
-			.title{
-			margin: auto;
-			width: 90%;
-			padding: 40px 0px 10px 0px;
-			text-align: center;
-			font-size: 70px;
-			}
-			.center{
-			background-color: #f1f1f1;
-			color: #0C567B;
-			font-size: 50px;
-			width: 75%;
-			font-weight: 700;
-			margin: auto;
-			padding: 20px 30px;
-			text-align: justify;
-			}
-			#kinhtin .title{
-			color: blue;
-			}
-			#kinhcay .title{
-			color: green;
-			}
-			#kinhmen .title{
-			color: #e81d43
-			}
-			#kinhtin .center{
-			color: #0C567B;
-			}
-			#kinhcay .center{
-			color: #084b08;
-			}
-			#kinhmen .center{
-			color: #a81631;//#800e23;
-			}
-			.contentmain{
-			background: white none repeat scroll 0 0;
-			color: black;
-			height: 270px;
-			width: 20%;
-			float: left;
-			text-align: right;
-			}
-			.contentCenter{
-			background: white none repeat scroll 0 0;
-			color: black;
-			height: 270px;
-			width: 61%;
-			float: left;
-			text-align: center;
-			}
-			.contentRight{
-			background: white none repeat scroll 0 0;
-			color: black;
-			height: 270px;
-			width: 19%;
-			float: right;
-			text-align: left;
-			margin: auto;
-			}
-			.timer{
-			margin-top: 100px;
 			
-			}
-			.second{
-			margin-left:40px;
-			}
+			
+			
 			
 /* Styling an indeterminate progress bar */
 
@@ -245,18 +181,102 @@ p[data-value]:after {
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size: 30px;
+  font-size: 40px;
   color: white;
 }
 
+.diamond{
+background: #0099FF;
+  margin: auto;
+  clip-path: ellipse(100px 50px at center);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size: 40px;
+  color: white;
+  height: 100px;
+  margin-top: 50px;
+}
+
 #countdown{
-font-size: 40px;
+font-size: 60px;
 text-align: center;
 }
 
+.timer{
+margin-top: 100px;
+
+}
+.second{
+margin-right:5px;
+width: 40px;
+
+}
+
+.grid_3col{
+display: grid;
+grid-gap: 5px;
+grid-template-columns: 3fr 2fr;
+grid-template-rows: minmax(0,1fr) auto;
+
+}
+
+.grid_3col > div {
+--border:1px solid black;
+
+}
+
+.grid_3col > div > img {
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+	object-position: 100% 0%;
+	margin-top: 80px;
+
+}
+
+.cmd {
+padding: 0px 50px;
+}
+
+.answer{
+font-size: 45px;
+margin-bottom: 25px;
+}
+
+.right{
+	font-size: 60px;
+  color: blue;
+
+}
+
+.count_down{
+	height: 90px;
+}
+
+.questions .question{
+	height: 200px;
+	display: none;
+}
+
+.questions .question.current{
+	display: block;
+}
+
+.questions .question.has_answer{
+	display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
 		</style>
 		<script>
+			var current_st = 'maria';
+			$(function() {
+				show_saint(current_st);
+			 });
+
+		
 			function doi_kinh(openkinh, closekinh1, closekinh2){
 			document.getElementById(openkinh).style.display = "block";
 			document.getElementById(closekinh1).style.display = "none";
@@ -274,13 +294,14 @@ text-align: center;
 				  if(timeleft <= 0){
 					clearInterval(downloadTimer);
 					ding.play();
+					$('.diamond').show();
 				  }
 				  else{
 					tick.currentTime = 0;
 					tick.play();  
 				  }
 				  document.getElementById("progressBar").value = second - timeleft;
-				  document.getElementById("countdown").innerHTML = timeleft + " giây";
+				  document.getElementById("countdown").innerHTML = timeleft ;
 				  timeleft -= 1;
 				  
 				  
@@ -288,9 +309,27 @@ text-align: center;
 			}
 			
 			function show_saint(st){
+				current_st = st;
 				$('.saint').hide();
-				$('.'+st+'').show();
+				$('.saint').removeClass('right_answer');
+				$('img.'+st+'').show();
 				
+				$('.questions .question').removeClass('has_answer');
+				$('.questions .question').removeClass('current');
+				//$('.questions .question.'+current_st+'').removeClass('has_answer');
+				$('.questions .question.'+current_st+'').addClass('current');
+				$('.'+current_st+' .answer').show();
+				
+				$('.diamond').hide();
+				$('.'+current_st+' .right_answer').removeClass('right');
+			}
+			
+			function show_answer(){
+				$('.'+current_st+' .answer').hide();
+				$('.questions .question.'+current_st+'').removeClass('current');
+				$('.questions .question.'+current_st+'').addClass('has_answer');
+				$('.'+current_st+' .right_answer').show()
+				$('.'+current_st+' .right_answer').addClass('right');
 			}
 			
 			function change_button_color(){
@@ -299,10 +338,26 @@ text-align: center;
 			
 		</script
   <body>
-		<div id="kinhtin" class="kinh" style="display: block; padding: 10px 50px">
-			<div class="contentmain">
+		<div class='grid_3col'>
+			
+			<div>
+			<image class="maria saint" src="https://lh3.googleusercontent.com/pw/AP1GczPAcAMiu5NloVs1yoJPJNoDmO1ax4m3lV1th78ldz1eHJqWMRzZNvv2SlC39nl21J4Nz6IUxS5lBKcukqKmDimhYJw9ovuRXAJtSLf56NxUV8icl9fOx_QKbbgpLqO8GFR1E3OznqSnXgDu9GHJUfzQqQ=w756-h945-s-no-gm?authuser=0" />
+				<image class="giuse saint" src="https://lh3.googleusercontent.com/pw/AP1GczNNtQ8Ko-iHlCsqdQurIjLhiD5cFYAk0_7Xn91bqkJ7HfVFdO0gZG0nAZVqPVphGdBlc4id_CmGKhe5OR0c4ny_3iSNaYjjiFyiOuo8dBT6dgw_nWY0uZAYmxl8Bodxxs32gjqVWHyTeazXwdjZUuW6Wg=w467-h600-s-no-gm?authuser=0" />
+				<image class="anna saint" src="https://lh3.googleusercontent.com/pw/AP1GczOPL0GvNQj2biUJVLjO05TzC90aNrqVrWgYoBa8hzSpvo0h1zUTW8Y1oXT5m8C_3z2tzOL_MEgTUBx56ru0R5w68dOiTK-PUDVR0nCNVXJS1ZIKxqWwmhmXZcUTYPZs1olJIk3lvxTjKBvVKjghVKiY4g=w648-h890-s-no-gm?authuser=0" />
+				<image class="phero saint" src="https://lh3.googleusercontent.com/pw/AP1GczPTzCuHHoEO_LfjMnz-9wtWZDBK3yI_BJ_WbdnqEZTBJ1Z-da0kwkx5KJMsXsUF0b0lAGZoFj3TMNgPjZwJgLR68YDgw4tvkqUJ6GxFvMnFXQrpnSd8u8Q5SBrqFcxHlTvzr1JcWIA4XWZz0ihJkmA7HQ=w703-h945-s-no-gm?authuser=0" />
+				<image class="madalena saint" src="https://lh3.googleusercontent.com/pw/AP1GczOSavaWE7HrXi17xcE3fnJpamProZnI_kxezUKznDujz_l-E7RSMFsky0MGp9mDQImU77kZYE0IJZmiVQhMKw_rmGpF11D0V4Jc9x2AC-1Tro6bmlfnkHiZfGe8eaCAK8L92QiuduAQpSezib47fxx3HA=w741-h900-s-no-gm?authuser=0" />
+				<image class="phanxico saint" src="https://lh3.googleusercontent.com/pw/AP1GczMqSgUc4jN8HQo3FkyPJrZdi4dnHdseHps0cS3ryCELOlIXSknJ2VKspH7V78cboyXQIwtm3Wk1Z6HdiWODM5XQV6wvAoE0XK0oYi9VGTORIc9VBjBEUcwTAM-raiSX7UEYtMDwYNwvFvH9wQz1-db1vQ=w714-h945-s-no-gm?authuser=0" />
+				<image class="daminh saint" src="https://lh3.googleusercontent.com/pw/AP1GczOmU-2owGH3L65hCZMMrl3kf7Z-mLE5l-xU9rBL3xWfygugRk8xEJj0MjBEgeaVBCXM9GmLWtwaXAfczF4mqXm4sbmkfxsVlq68cRKeid8HIzHtiv2fFcmBeRu4UveJQ0R34YMzU0eqFoYkADzLYNVLrA=w526-h679-s-no-gm?authuser=0" />
+				<image class="vincente saint" src="https://lh3.googleusercontent.com/pw/AP1GczPho6jUU52EltrOrpogZYo32mLLYy_Uzefrn4JRKT2ymqry4dKsqb2q-ftRdV2PmB8Bf_0SbvGm4lNSvoeckYJw9gufthVzHhTPswQOEtL4YTjElkN1cWm3wZx8K-h_Qm2Pigox4OrYOZR9IFb2e-ZHeg=w541-h945-s-no-gm?authuser=0" />
+				<image class="martino saint" src="https://lh3.googleusercontent.com/pw/AP1GczN_2bKmPrW7cDR5pnF3ltdVQetFn1vDJ0fPs6IsCKrz-ef_MOrffzXfsqT11nHBYt0FbAcQ5ko5kbVwz0h2wfezexw5BPVBWhjo2oNQeTT_0HiU3b5lWJysxUSvPANE0KeB3m69HkzQE0swMazJ2MUVEA=w709-h945-s-no-gm?authuser=0" />
+				<image class="teresa saint" src="https://lh3.googleusercontent.com/pw/AP1GczNe-86V_yP_GrT5ye6m6mYd_Dh_Daku5d5NnOklFRXVKOPMRnxlywO_JEb2SSmoOvPn8HpMwINMpJVsxMjRzF0rTS1C-8Ur3MA3Y7iLdM3W-KhXyyIgfFNpfXeeON4jtnTP47j1bRMyMWp0QC4JiP0TdA=w812-h945-s-no-gm?authuser=0" />
+				<image class="savio saint" src="https://lh3.googleusercontent.com/pw/AP1GczNMAVYYCkSTQDFsCQueA-ZUpQOT8DvctjM5khNDRbDp1gtX82mlKHZvNlfkbvCNr8z5sAE2dnEFVEaMLSdqd5bWJvkHWzMSNZBfykgUvf3PhMBaLELW7qzp611x--ySLE-MV7__E0D11LFFKgSJf8pIOg=w561-h945-s-no-gm?authuser=0" />
+				<image class="me_tc saint" src="https://lh3.googleusercontent.com/pw/AP1GczMzDlYePK35pAROQkV2aIY-XDlEJrqHQd7KFPu0jlfTHbvARGep0GjN3rsLzWs4ndamWyxDhpLp_9o9VwDb4XW-5anmRZRl7Fjq4wIuoFq-yZzI2jLzp4JKJi-zalUZ7P4l0Yrv00S6v_G_NUgJGTRQ9g=w840-h945-s-no-gm?authuser=0" />
+				<image class="phaolo saint" src="https://lh3.googleusercontent.com/pw/AP1GczOpqa5a0IjqlNpX12i6JLmsALtQr8MXXnpiGGKziMiKFJRSJePTgMzTrAEnTtBlrdpq270w129jeaAWO2OwEWCRbHHiUnkOnvfq-8T5hM6jBOtk19ggZDMiv7YrFavgW9LimdBGVTfmWu4S3w-XXaqHuA=w590-h827-s-no-gm?authuser=0" />
+			</div>
+			<div class='cmd'>
 			<span class='second'>
-						<input id='second' value='20'></input>
+						<input style="width: 40px;" id='second' value='2'></input>
 					</span>
 				<button onclick="show_saint('maria')">Maria</button>
 				<button onclick="show_saint('giuse')">Giuse</button>
@@ -333,27 +388,88 @@ text-align: center;
 						<span style="width: 80%">80%</span>
 					  </div>
 					</progress>
-					<div id="countdown"></div>
+					<div class='count_down'>
+						<div id="countdown"></div>
+					</div>
 					
 				</div>
+				<div class='questions'>
+					<div class='question maria'>
+						<div class='answer'>A. Cecilia</div>
+						<div class='answer'>B. Monica</div>
+						<div class='answer right_answer'>C. Maria</div>
+					</div>
+					<div class='question giuse'>
+						<div class='answer'>A. Phaolô</div>
+						<div class='answer right_answer'>B. Giuse</div>
+						<div class='answer'>C. Augustinô</div>
+					</div>
+					<div class='question anna'>
+						<div class='answer right_answer'>A. Anna</div>
+						<div class='answer'>B. Monica</div>
+						<div class='answer'>C. Lucia</div>
+					</div>
+					<div class='question phero'>
+						<div class='answer'>A. Phaolô</div>
+						<div class='answer'>B. Matthêu</div>
+						<div class='answer right_answer'>C. Phêrô</div>
+					</div>
+					<div class='question madalena'>
+						<div class='answer'>A. Têrêsa Avila</div>
+						<div class='answer'>B. Maria Goretti</div>
+						<div class='answer right_answer'>C. Maria Madalena</div>
+					</div>
+					<div class='question phanxico'>
+						<div class='answer right_answer'>A. Phanxico</div>
+						<div class='answer'>B. Augustino</div>
+						<div class='answer'>C. Giacôbê</div>
+					</div>
+					<div class='question daminh'>
+						<div class='answer'>A. Augustino</div>
+						<div class='answer right_answer'>B. Đaminh</div>
+						<div class='answer'>C. Luca</div>
+					</div>
+					<div class='question vincente'>
+						<div class='answer right_answer'>A. Vincente</div>
+						<div class='answer'>B. Matthêu</div>
+						<div class='answer'>C. Antôn</div>
+					</div>
+					<div class='question martino'>
+						<div class='answer'>A. Giacôbê</div>
+						<div class='answer'>B. Matthêu</div>
+						<div class='answer right_answer'>C. Martino</div>
+					</div>
+					<div class='question teresa'>
+						<div class='answer'>A. Catarina</div>
+						<div class='answer'>B. Clara</div>
+						<div class='answer right_answer'>C. Têrêsa</div>
+					</div>
+					<div class='question savio'>
+						<div class='answer'>A. Don Bosco</div>
+						<div class='answer right_answer'>B. Đaminh Savio</div>
+						<div class='answer'>C. Gioan</div>
+					</div>
+					<div class='question phaolo'>
+						<div class='answer'>A. Luca</div>
+						<div class='answer right_answer'>B. Phaolô</div>
+						<div class='answer'>C. Gioan</div>
+					</div>
+					<div class='question me_tc'>
+						<div class='answer'>A. Anna</div>
+						<div class='answer right_answer'>B. Maria</div>
+						<div class='answer'>C. Isave</div>
+					</div>
+				</div>
+				<div class="diamond" onclick='show_answer()'>
+						<div class="">
+						  Kết quả
+						</div>
+					</div>
+				<div>
+				</div>
 			</div>
-			<div class="contentCenter">
-				<image class="maria saint" src="https://lh3.googleusercontent.com/pw/AP1GczPAcAMiu5NloVs1yoJPJNoDmO1ax4m3lV1th78ldz1eHJqWMRzZNvv2SlC39nl21J4Nz6IUxS5lBKcukqKmDimhYJw9ovuRXAJtSLf56NxUV8icl9fOx_QKbbgpLqO8GFR1E3OznqSnXgDu9GHJUfzQqQ=w756-h945-s-no-gm?authuser=0" />
-				<image class="giuse saint" src="https://lh3.googleusercontent.com/pw/AP1GczNNtQ8Ko-iHlCsqdQurIjLhiD5cFYAk0_7Xn91bqkJ7HfVFdO0gZG0nAZVqPVphGdBlc4id_CmGKhe5OR0c4ny_3iSNaYjjiFyiOuo8dBT6dgw_nWY0uZAYmxl8Bodxxs32gjqVWHyTeazXwdjZUuW6Wg=w467-h600-s-no-gm?authuser=0" />
-				<image class="anna saint" src="https://lh3.googleusercontent.com/pw/AP1GczOPL0GvNQj2biUJVLjO05TzC90aNrqVrWgYoBa8hzSpvo0h1zUTW8Y1oXT5m8C_3z2tzOL_MEgTUBx56ru0R5w68dOiTK-PUDVR0nCNVXJS1ZIKxqWwmhmXZcUTYPZs1olJIk3lvxTjKBvVKjghVKiY4g=w648-h890-s-no-gm?authuser=0" />
-				<image class="phero saint" src="https://lh3.googleusercontent.com/pw/AP1GczPTzCuHHoEO_LfjMnz-9wtWZDBK3yI_BJ_WbdnqEZTBJ1Z-da0kwkx5KJMsXsUF0b0lAGZoFj3TMNgPjZwJgLR68YDgw4tvkqUJ6GxFvMnFXQrpnSd8u8Q5SBrqFcxHlTvzr1JcWIA4XWZz0ihJkmA7HQ=w703-h945-s-no-gm?authuser=0" />
-				<image class="madalena saint" src="https://lh3.googleusercontent.com/pw/AP1GczOSavaWE7HrXi17xcE3fnJpamProZnI_kxezUKznDujz_l-E7RSMFsky0MGp9mDQImU77kZYE0IJZmiVQhMKw_rmGpF11D0V4Jc9x2AC-1Tro6bmlfnkHiZfGe8eaCAK8L92QiuduAQpSezib47fxx3HA=w741-h900-s-no-gm?authuser=0" />
-				<image class="phanxico saint" src="https://lh3.googleusercontent.com/pw/AP1GczMqSgUc4jN8HQo3FkyPJrZdi4dnHdseHps0cS3ryCELOlIXSknJ2VKspH7V78cboyXQIwtm3Wk1Z6HdiWODM5XQV6wvAoE0XK0oYi9VGTORIc9VBjBEUcwTAM-raiSX7UEYtMDwYNwvFvH9wQz1-db1vQ=w714-h945-s-no-gm?authuser=0" />
-				<image class="daminh saint" src="https://lh3.googleusercontent.com/pw/AP1GczOmU-2owGH3L65hCZMMrl3kf7Z-mLE5l-xU9rBL3xWfygugRk8xEJj0MjBEgeaVBCXM9GmLWtwaXAfczF4mqXm4sbmkfxsVlq68cRKeid8HIzHtiv2fFcmBeRu4UveJQ0R34YMzU0eqFoYkADzLYNVLrA=w526-h679-s-no-gm?authuser=0" />
-				<image class="vincente saint" src="https://lh3.googleusercontent.com/pw/AP1GczPho6jUU52EltrOrpogZYo32mLLYy_Uzefrn4JRKT2ymqry4dKsqb2q-ftRdV2PmB8Bf_0SbvGm4lNSvoeckYJw9gufthVzHhTPswQOEtL4YTjElkN1cWm3wZx8K-h_Qm2Pigox4OrYOZR9IFb2e-ZHeg=w541-h945-s-no-gm?authuser=0" />
-				<image class="martino saint" src="https://lh3.googleusercontent.com/pw/AP1GczN_2bKmPrW7cDR5pnF3ltdVQetFn1vDJ0fPs6IsCKrz-ef_MOrffzXfsqT11nHBYt0FbAcQ5ko5kbVwz0h2wfezexw5BPVBWhjo2oNQeTT_0HiU3b5lWJysxUSvPANE0KeB3m69HkzQE0swMazJ2MUVEA=w709-h945-s-no-gm?authuser=0" />
-				<image class="teresa saint" src="https://lh3.googleusercontent.com/pw/AP1GczNe-86V_yP_GrT5ye6m6mYd_Dh_Daku5d5NnOklFRXVKOPMRnxlywO_JEb2SSmoOvPn8HpMwINMpJVsxMjRzF0rTS1C-8Ur3MA3Y7iLdM3W-KhXyyIgfFNpfXeeON4jtnTP47j1bRMyMWp0QC4JiP0TdA=w812-h945-s-no-gm?authuser=0" />
-				<image class="savio saint" src="https://lh3.googleusercontent.com/pw/AP1GczNMAVYYCkSTQDFsCQueA-ZUpQOT8DvctjM5khNDRbDp1gtX82mlKHZvNlfkbvCNr8z5sAE2dnEFVEaMLSdqd5bWJvkHWzMSNZBfykgUvf3PhMBaLELW7qzp611x--ySLE-MV7__E0D11LFFKgSJf8pIOg=w561-h945-s-no-gm?authuser=0" />
-				<image class="me_tc saint" src="https://lh3.googleusercontent.com/pw/AP1GczMzDlYePK35pAROQkV2aIY-XDlEJrqHQd7KFPu0jlfTHbvARGep0GjN3rsLzWs4ndamWyxDhpLp_9o9VwDb4XW-5anmRZRl7Fjq4wIuoFq-yZzI2jLzp4JKJi-zalUZ7P4l0Yrv00S6v_G_NUgJGTRQ9g=w840-h945-s-no-gm?authuser=0" />
-				<image class="phaolo saint" src="https://lh3.googleusercontent.com/pw/AP1GczOpqa5a0IjqlNpX12i6JLmsALtQr8MXXnpiGGKziMiKFJRSJePTgMzTrAEnTtBlrdpq270w129jeaAWO2OwEWCRbHHiUnkOnvfq-8T5hM6jBOtk19ggZDMiv7YrFavgW9LimdBGVTfmWu4S3w-XXaqHuA=w590-h827-s-no-gm?authuser=0" />
-			</div>
-			<div class="contentRight">
-			<div class="maria saint">
+			<div>
+				<div class="maria saint">
 				Hiện ra 6 lần tại Fatima với 3 bé từ 13.5 -> 13.10
 				<br />
 				<br />
@@ -519,12 +635,7 @@ text-align: center;
 			</div>
 			<div class="me_tc saint"></div>
 			<div class="phaolo saint"></div>
-				
 			</div>
-			<div style="display:block;">
-			</div>
-			
 		</div>
-		
 	</body>
 </html>
