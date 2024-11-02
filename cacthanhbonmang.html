@@ -239,7 +239,7 @@ grid-template-rows: minmax(0,1fr) auto;
 padding: 0px 50px;
 }
 
-.answer{
+.answer, .ngaykinh{
 font-size: 45px;
 margin-bottom: 25px;
 }
@@ -254,24 +254,26 @@ margin-bottom: 25px;
 	height: 90px;
 }
 
-.questions .question{
+.questions .question, .questions .ngaykinhs{
 	height: 200px;
 	display: none;
 }
 
-.questions .question.current{
+.questions .question.current, .questions .ngaykinhs.current{
 	display: block;
 }
 
-.questions .question.has_answer{
+.questions .question.has_answer, .questions .ngaykinhs.has_answer{
 	display:flex;
   justify-content:center;
   align-items:center;
 }
 
+
 		</style>
 		<script>
 			var current_st = 'maria';
+			var answer_ngaykinh = false;
 			$(function() {
 				show_saint(current_st);
 			 });
@@ -309,6 +311,7 @@ margin-bottom: 25px;
 			}
 			
 			function show_saint(st){
+				answer_ngaykinh = false;
 				current_st = st;
 				$('.saint').hide();
 				$('.saint').removeClass('right_answer');
@@ -316,6 +319,8 @@ margin-bottom: 25px;
 				
 				$('.questions .question').removeClass('has_answer');
 				$('.questions .question').removeClass('current');
+				$('.questions .ngaykinhs').removeClass('current');
+				$('.questions .ngaykinhs').removeClass('has_answer');
 				//$('.questions .question.'+current_st+'').removeClass('has_answer');
 				$('.questions .question.'+current_st+'').addClass('current');
 				$('.'+current_st+' .answer').show();
@@ -325,15 +330,32 @@ margin-bottom: 25px;
 			}
 			
 			function show_answer(){
-				$('.'+current_st+' .answer').hide();
-				$('.questions .question.'+current_st+'').removeClass('current');
-				$('.questions .question.'+current_st+'').addClass('has_answer');
-				$('.'+current_st+' .right_answer').show()
-				$('.'+current_st+' .right_answer').addClass('right');
+			if(answer_ngaykinh){
+					answer_ngaykinh = false;
+					$('.'+current_st+' .ngaykinh').hide();
+					$('.questions .ngaykinhs.'+current_st+'').removeClass('current');
+					$('.questions .ngaykinhs.'+current_st+'').addClass('has_answer');
+					$('.ngaykinhs.'+current_st+' .right_answer').show()
+					$('.ngaykinhs.'+current_st+' .right_answer').addClass('right');	
+				}else{
+					$('.'+current_st+' .answer').hide();
+					$('.questions .question.'+current_st+'').removeClass('current');
+					$('.questions .question.'+current_st+'').addClass('has_answer');
+					$('.'+current_st+' .right_answer').show()
+					$('.'+current_st+' .right_answer').addClass('right');
+				}
+				
 			}
 			
 			function change_button_color(){
 				$('button').css('color', "white");
+			}
+			
+			function show_ngaykinh(){
+				$('.ngaykinhs.'+current_st+'').addClass('current');
+				$('.ngaykinhs.'+current_st+' .right_answer').removeClass('right');
+				$('.'+current_st+' .ngaykinh').show();
+				answer_ngaykinh = true;
 			}
 			
 		</script
@@ -397,67 +419,132 @@ margin-bottom: 25px;
 					<div class='question maria'>
 						<div class='answer'>A. Cecilia</div>
 						<div class='answer'>B. Monica</div>
-						<div class='answer right_answer'>C. Maria</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>C. Maria</div>
+					</div>
+					<div class='ngaykinhs maria'>
+						<div class='ngaykinh right_answer'>A. 08/12</div>
+						<div class='ngaykinh'>B. 10/10</div>
+						<div class='ngaykinh'>C. 12/08</div>
 					</div>
 					<div class='question giuse'>
 						<div class='answer'>A. Phaolô</div>
-						<div class='answer right_answer'>B. Giuse</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>B. Giuse</div>
 						<div class='answer'>C. Augustinô</div>
 					</div>
+					<div class='ngaykinhs giuse'>
+						<div class='ngaykinh right_answer'>A. 19/03</div>
+						<div class='ngaykinh'>B. 19/5</div>
+						<div class='ngaykinh'>C. 19/7</div>
+					</div>
 					<div class='question anna'>
-						<div class='answer right_answer'>A. Anna</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>A. Anna</div>
 						<div class='answer'>B. Monica</div>
 						<div class='answer'>C. Lucia</div>
+					</div>
+					<div class='ngaykinhs anna'>
+						<div class='ngaykinh'>A. 26/06</div>
+						<div class='ngaykinh right_answer'>B. 26/07</div>
+						<div class='ngaykinh'>C. 26/08</div>
 					</div>
 					<div class='question phero'>
 						<div class='answer'>A. Phaolô</div>
 						<div class='answer'>B. Matthêu</div>
-						<div class='answer right_answer'>C. Phêrô</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>C. Phêrô</div>
+					</div>
+					<div class='ngaykinhs phero'>
+						<div class='ngaykinh'>A. 28/06</div>
+						<div class='ngaykinh right_answer'>B. 29/06</div>
+						<div class='ngaykinh'>C. 30/06</div>
 					</div>
 					<div class='question madalena'>
 						<div class='answer'>A. Têrêsa Avila</div>
 						<div class='answer'>B. Maria Goretti</div>
-						<div class='answer right_answer'>C. Maria Madalena</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>C. Maria Madalena</div>
+					</div>
+					<div class='ngaykinhs madalena'>
+						<div class='ngaykinh'>A. 20/07</div>
+						<div class='ngaykinh'>B. 21/07</div>
+						<div class='ngaykinh right_answer'>C. 22/07</div>
 					</div>
 					<div class='question phanxico'>
-						<div class='answer right_answer'>A. Phanxico</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>A. Phanxico</div>
 						<div class='answer'>B. Augustino</div>
 						<div class='answer'>C. Giacôbê</div>
 					</div>
+					<div class='ngaykinhs phanxico'>
+						<div class='ngaykinh right_answer'>A. 04/10</div>
+						<div class='ngaykinh'>B. 04/11</div>
+						<div class='ngaykinh'>C. 04/12</div>
+					</div>
 					<div class='question daminh'>
 						<div class='answer'>A. Augustino</div>
-						<div class='answer right_answer'>B. Đaminh</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>B. Đaminh</div>
 						<div class='answer'>C. Luca</div>
 					</div>
+					<div class='ngaykinhs daminh'>
+						<div class='ngaykinh right_answer'>A. 08/08</div>
+						<div class='ngaykinh'>B. 09/09</div>
+						<div class='ngaykinh'>C. 10/10</div>
+					</div>
 					<div class='question vincente'>
-						<div class='answer right_answer'>A. Vincente</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>A. Vincente</div>
 						<div class='answer'>B. Matthêu</div>
 						<div class='answer'>C. Antôn</div>
+					</div>
+					<div class='ngaykinhs vincente'>
+						<div class='ngaykinh'>A. 03/04</div>
+						<div class='ngaykinh right_answer'>B. 05/04</div>
+						<div class='ngaykinh'>C. 06/07</div>
 					</div>
 					<div class='question martino'>
 						<div class='answer'>A. Giacôbê</div>
 						<div class='answer'>B. Matthêu</div>
-						<div class='answer right_answer'>C. Martino</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>C. Martino</div>
+					</div>
+					<div class='ngaykinhs martino'>
+						<div class='ngaykinh right_answer'>A. 03/11</div>
+						<div class='ngaykinh'>B. 11/03</div>
+						<div class='ngaykinh'>C. 01/03</div>
 					</div>
 					<div class='question teresa'>
 						<div class='answer'>A. Catarina</div>
 						<div class='answer'>B. Clara</div>
-						<div class='answer right_answer'>C. Têrêsa</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>C. Têrêsa</div>
+					</div>
+					<div class='ngaykinhs teresa'>
+						<div class='ngaykinh right_answer'>A. 01/10</div>
+						<div class='ngaykinh'>B. 10/01</div>
+						<div class='ngaykinh'>C. 10/10</div>
 					</div>
 					<div class='question savio'>
 						<div class='answer'>A. Don Bosco</div>
-						<div class='answer right_answer'>B. Đaminh Savio</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>B. Đaminh Savio</div>
 						<div class='answer'>C. Gioan</div>
+					</div>
+					<div class='ngaykinhs savio'>
+						<div class='ngaykinh'>A. 04/05</div>
+						<div class='ngaykinh'>B. 05/05</div>
+						<div class='ngaykinh right_answer'>C. 06/05</div>
 					</div>
 					<div class='question phaolo'>
 						<div class='answer'>A. Luca</div>
-						<div class='answer right_answer'>B. Phaolô</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>B. Phaolô</div>
 						<div class='answer'>C. Gioan</div>
+					</div>
+					<div class='ngaykinhs phaolo'>
+						<div class='ngaykinh right_answer'>A. 29/06</div>
+						<div class='ngaykinh'>B. 29/05</div>
+						<div class='ngaykinh'>C. 29/04</div>
 					</div>
 					<div class='question me_tc'>
 						<div class='answer'>A. Anna</div>
-						<div class='answer right_answer'>B. Maria</div>
+						<div class='answer right_answer' onclick='show_ngaykinh()'>B. Maria</div>
 						<div class='answer'>C. Isave</div>
+					</div>
+					<div class='ngaykinhs me_tc'>
+						<div class='ngaykinh right_answer'>A. 01/01</div>
+						<div class='ngaykinh'>B. 02/02</div>
+						<div class='ngaykinh'>C. 03/03</div>
 					</div>
 				</div>
 				<div class="diamond" onclick='show_answer()'>
