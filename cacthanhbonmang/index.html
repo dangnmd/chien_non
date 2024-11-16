@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+			<script src="cacthanhbonmang.js"></script>	
+			<link rel="stylesheet" href="../css/chiencon.css"></link>
+			<link rel="stylesheet" href="cacthanhbonmang.css"></link>
+			<title>Các Thánh Bổn Mạng</title>
+		</head>
+		<body>
+			<div class='grid_2col'>
+				<div>
+					<button onclick="show_quiz('maria')">Bài Học / Trò Chơi</button>
+					<button onclick="change_button_color()">Ẩn Tên Thánh</button>
+				</div>
+				<div class='saint_buttons'>
+					<span class='second'>
+						<input style="width: 40px;" id='second' value='2'/>
+					</span>
+				</div>
+				<div class='img'>
+				</div>
+				
+				<div class='description'>
+				</div>
+				<div class='quiz'>
+					<div class='timer'>
+						<div class="circle" onclick='count_down()'>
+							<div class="">
+								Start
+							</div>
+						</div>
+						<br/>
+						<br/>
+						<progress max='10' value="0" class="html5" id="progressBar">
+							<!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
+							<div class="progress-bar">
+								<span style="width: 80%">80%</span>
+							</div>
+						</progress>
+						<div class='count_down'>
+							<div id="countdown"/>
+						</div>
+					</div>
+					<div class='questions'>
+					
+					</div>
+					<div class="diamond" onclick='show_answer()'>
+						<div class="">
+							Kết quả
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>
