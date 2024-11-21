@@ -72,6 +72,10 @@ grid-template-rows: minmax(0,1fr) auto;
 	margin-top: 50px;
 }
 
+.description div.saint{
+	white-space: pre-wrap;
+}
+
 .answer, .ngaykinh{
 	font-size: 45px;
 	margin-bottom: 25px;

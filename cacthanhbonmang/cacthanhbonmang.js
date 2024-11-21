@@ -30,7 +30,7 @@ $(function () {
 
 $.fn.multiline = function(text){
     this.text(text);
-    this.html(this.html().replace(/\\n/g,'<br/>'));
+    this.html(this.html().replace(/\\n/g,'<br/>').replace(/\n/g,'<br/>'));
     return this;
 }
 
@@ -100,11 +100,11 @@ function bind_saint_photo() {
 function bind_saint_description() {
     var st = current_st;
     var desciption = data[st]['description'];
-	console.log(desciption);
     $('div.description').empty();
     var descElement = $('<div>');
     descElement.attr('class', '' + st + ' saint');
-    descElement.multiline(desciption);
+    //descElement.multiline(desciption);
+	descElement.html(desciption);
     $('div.description').append(descElement);
 }
 
