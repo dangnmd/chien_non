@@ -1,6 +1,79 @@
 <!DOCTYPE html>
 	<html>
 		<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script>
+			var kinhtin = 'kinhtin';
+			var kinhcay = 'kinhcay';
+			var kinhmen = 'kinhmen';
+			
+			var active_kinh = kinhtin;
+			var part_active = 'part_active';
+			var kinh_tin = 'Lạy Chúa, con tin thật có một Đức Chúa Trời là Đấng thưởng phạt vô cùng. Con lại tin thật Đức Chúa Trời có Ba Ngôi, mà Ngôi Thứ Hai đã xuống thế làm Người, chịu nạn chịu chết mà chuộc tội cho thiên hạ. Bấy nhiêu điều ấy cùng các điều Hội Thánh dạy thì con tin vững vàng, vì Chúa là Đấng thông minh và chân thật vô cùng đã phán truyền cho Hội Thánh. Amen';
+			var kinh_cay = 'Lạy Chúa, con trông cậy vững vàng, vì công nghiệp Đức Chúa Giêsu thì Chúa sẽ ban ơn cho con giữ đạo nên ở đời này, cho ngày sau được lên thiên đàng xem thấy mặt Đức Chúa Trời hưởng phúc đời đời, vì Chúa là đấng phép tắc và lòng lành vô cùng đã phán hứa sự ấy chẳng có lẽ nào sai được. Amen.';
+			var kinh_men = 'Lạy Chúa, con kính mến Chúa hết lòng hết sức trên hết mọi sự, vì Chúa là Đấng trọn tốt trọn lành vô cùng, lại vì Chúa, thì con thương yêu người ta như mình con vậy. Amen.';
+			var kinhs = {
+				kinhtin: kinh_tin,
+				kinhcay: kinh_cay,
+				kinhmen: kinh_men
+			};
+		
+			function doi_kinh(openkinh, closekinh1, closekinh2){
+				document.getElementById(openkinh).style.display = "block";
+				document.getElementById(closekinh1).style.display = "none";
+				document.getElementById(closekinh2).style.display = "none";
+				active_kinh = openkinh;
+				$('#'+active_kinh+' .learn_part').show();
+				$('#'+active_kinh+' .hide_percentage').hide();
+			}
+			
+			function active_part(){
+				var index_active = 0;
+				var parts = $('#'+active_kinh+' .part');
+				parts.each(function(index, item){
+					if($(item).hasClass(part_active)){
+						index_active = index + 1;
+					}
+					$(item).removeClass(part_active);
+				});
+				if(index_active >= parts.length){
+					index_active = 0;
+				}
+				$(parts[index_active]).addClass(part_active);
+			}
+			
+			function hide_part_of_kinh(){
+				var percent = $('#percentage_hide').val();
+				var active_content = kinhs[active_kinh];
+				var content_array = active_content.split(' ');
+				var total_length = content_array.length;
+				var number_of_hide = Math.floor((percent * total_length) / 100);
+				for(let i=0;i<number_of_hide;i++){
+					var hide_index = getRandomInt(0, total_length - 1);
+					content_array[hide_index] = '<span class="hide_text">*</span>';
+				}
+				var rs = content_array.join(' ');
+				$('#'+active_kinh+' .hide_percentage').html(rs);
+				$('#'+active_kinh+' .hide_percentage').show();
+				$('#'+active_kinh+' .learn_part').hide();
+			}
+			
+			function getRandomInt(min, max) {
+				min = Math.ceil(min);
+				max = Math.floor(max);
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+			
+			window.addEventListener("keydown", function (e) { 
+					if (13 == e.keyCode) 
+					{ 
+						active_part();
+					} 
+				}
+			);
+			
+			$(document).on('click', '.center', active_part);
+		</script>
 			<title>Kinh Tin - Cậy - Mến</title>
 		</head>
 		<style>
@@ -64,16 +137,52 @@
 			text-align: left;
 			margin: auto;
 			}
-		</style>
-		<script>
-			function doi_kinh(openkinh, closekinh1, closekinh2){
-			document.getElementById(openkinh).style.display = "block";
-			document.getElementById(closekinh1).style.display = "none";
-			document.getElementById(closekinh2).style.display = "none";
+			#kinhtin .part_active{
+				color: blue;
 			}
-		</script
+			#kinhcay .part_active{
+				color: blue;
+			}
+			#kinhmen .part_active{
+				color: blue;
+			}
+			
+			.hide_text{
+				color:blue;
+				background-color:white; 
+				width:70px; 
+				height:40px; 
+				display:inline-block; 
+				text-align:center; 
+				vertical-align:middle;
+				border: 1px solid blue;
+			}
+			
+			#kinhtin .hide_text{
+				color:blue;
+				background-color:white; 
+				border: 1px solid blue;
+			}
+			
+			#kinhcay .hide_text{
+				color:green;
+				background-color:white; 
+				border: 1px solid green;
+			}
+			
+			#kinhmen .hide_text{
+				color:#e81d43;;
+				background-color:white; 
+				border: 1px solid #e81d43;;
+			}
+		</style>
+		
   <body>
 		<div>
+			<span>
+				<button onclick="hide_part_of_kinh()">Hide (%)</button>
+			</span>
+			<span><input id="percentage_hide" value="20" style="width:30px"></input>
 			<span>
 				<button onclick="doi_kinh('kinhtin','kinhcay','kinhmen')">Kinh Tin</button>
 			</span>
@@ -94,7 +203,18 @@
 			<div class="contentRight">
 				<image src="https://dangnmd.github.io/chien_non/350115481_973605643658151_4720933882453961144_n-Photoroom.png-Photoroom.png" width="145" height="145"/>
 			</div>
-			<div class="center">Lạy Chúa, con tin thật có một Đức Chúa Trời là Đấng thưởng phạt vô cùng.  Con lại tin thật Đức Chúa Trời có Ba Ngôi, mà Ngôi Thứ Hai đã xuống thế làm Người, chịu nạn chịu chết mà chuộc tội cho thiên hạ.  Bấy nhiêu điều ấy cùng các điều Hội Thánh dạy thì con tin vững vàng, vì Chúa là Đấng thông minh và chân thật vô cùng đã phán truyền cho Hội Thánh.  Amen</div>
+			<div class="center learn_part">
+				<span class="part">Lạy Chúa, </span>
+				<span class="part">con tin thật có một Đức Chúa Trời là Đấng thưởng phạt vô cùng. </span>
+				<span class="part">Con lại tin thật Đức Chúa Trời có ba Ngôi, </span>
+				<span class="part">mà Ngôi Thứ Hai đã xuống thế làm người, </span>
+				<span class="part">chịu nạn chịu chết mà chuộc tội cho thiên hạ. </span>
+				<span class="part">Bấy nhiêu điều ấy cùng các điều Hội Thánh dạy </span>
+				<span class="part">thì con tin vững vàng, </span>
+				<span class="part">vì Chúa là Đấng thông minh và chân thật vô cùng </span>
+				<span class="part">đã phán truyền cho Hội Thánh. Amen.
+			</div>
+			<div class="center hide_percentage"></div>
 		</div>
 		<div id="kinhcay" class="kinh" style="display: none;">
 			<div class="contentmain">
@@ -106,7 +226,17 @@
 			<div class="contentRight">
 				<image src="https://dangnmd.github.io/chien_non/350115481_973605643658151_4720933882453961144_n-Photoroom.png-Photoroom.png" width="145" height="145"/>
 			</div>
-			<div class="center">Lạy Chúa , con trông cậy vững vàng, vì công nghiệp Đức Chúa Giêsu thì Chúa sẽ ban ơn cho con giữ đạo nên ở đời này, cho ngày sau được lên thiên đàng xem thấy mặt Đức Chúa Trời hưởng phúc đời đời, vì Chúa là đấng phép tắc và lòng lành vô cùng đã phán hứa sự ấy chẳng có lẽ nào sai được.  Amen.</div>
+			<div class="center learn_part">
+				<span class="part">Lạy Chúa, </span>
+				<span class="part">con trông cậy vững vàng, </span>
+				<span class="part">vì công nghiệp Đức Chúa Giêsu </span>
+				<span class="part">thì Chúa sẽ ban ơn cho con giữ đạo nên ở đời này, </span>
+				<span class="part">cho ngày sau được lên Thiên Đàng </span>
+				<span class="part">xem thấy mặt Đức Chúa Trời hưởng phúc đời đời, </span>
+				<span class="part">vì Chúa là Đấng phép tắc và lòng lành vô cùng </span>
+				<span class="part">đã phán hứa sự ấy chẳng có lẽ nào sai được. Amen.</span>
+			</div>
+			<div class="center hide_percentage"></div>
 		</div>
 		<div id="kinhmen" class="kinh" style="display: none;">
 			<div class="contentmain">
@@ -118,7 +248,13 @@
 			<div class="contentRight">
 				<image src="https://dangnmd.github.io/chien_non/350115481_973605643658151_4720933882453961144_n-Photoroom.png-Photoroom.png" width="145" height="145"/>
 			</div>
-			<div class="center">Lạy Chúa , con kính mến Chúa hết lòng hết sức trên hết mọi sự, vì Chúa là Đấng trọn tốt trọn lành vô cùng, lại vì Chúa, thì con thương yêu người ta như mình con vậy.  Amen.</div>
+			<div class="center learn_part">
+				<span class="part">Lạy Chúa, </span>
+				<span class="part">con kính mến Chúa hết lòng hết sức trên hết mọi sự, </span>
+				<span class="part">vì Chúa là Đấng trọn tốt trọn lành vô cùng, </span>
+				<span class="part">lại vì Chúa thì con thương yêu người ta như mình con vậy. Amen.</span>
+			</div>
+			<div class="center hide_percentage"></div>
 		</div>
 	</body>
 </html>
