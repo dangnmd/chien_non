@@ -6,22 +6,26 @@
 			var kinhtin = 'kinhtin';
 			var kinhcay = 'kinhcay';
 			var kinhmen = 'kinhmen';
+			var kinhsangsoi = 'kinhsangsoi';
 			
 			var active_kinh = kinhtin;
 			var part_active = 'part_active';
 			var kinh_tin = 'Lạy Chúa, con tin thật có một Đức Chúa Trời là Đấng thưởng phạt vô cùng. Con lại tin thật Đức Chúa Trời có Ba Ngôi, mà Ngôi Thứ Hai đã xuống thế làm Người, chịu nạn chịu chết mà chuộc tội cho thiên hạ. Bấy nhiêu điều ấy cùng các điều Hội Thánh dạy thì con tin vững vàng, vì Chúa là Đấng thông minh và chân thật vô cùng đã phán truyền cho Hội Thánh. Amen';
 			var kinh_cay = 'Lạy Chúa, con trông cậy vững vàng, vì công nghiệp Đức Chúa Giêsu thì Chúa sẽ ban ơn cho con giữ đạo nên ở đời này, cho ngày sau được lên thiên đàng xem thấy mặt Đức Chúa Trời hưởng phúc đời đời, vì Chúa là đấng phép tắc và lòng lành vô cùng đã phán hứa sự ấy chẳng có lẽ nào sai được. Amen.';
 			var kinh_men = 'Lạy Chúa, con kính mến Chúa hết lòng hết sức trên hết mọi sự, vì Chúa là Đấng trọn tốt trọn lành vô cùng, lại vì Chúa, thì con thương yêu người ta như mình con vậy. Amen.';
+			var kinh_sangsoi = 'Cúi xin Chúa sáng soi, cho chúng con được biết việc phải làm, cùng khi làm, xin Chúa giúp đỡ cho mỗi kinh mỗi việc chúng con, từ khởi sự cho đến hoàn thành đều nhờ bởi ơn Chúa. Amen';
 			var kinhs = {
 				kinhtin: kinh_tin,
 				kinhcay: kinh_cay,
-				kinhmen: kinh_men
+				kinhmen: kinh_men,
+				kinhsangsoi: kinh_sangsoi
 			};
 		
-			function doi_kinh(openkinh, closekinh1, closekinh2){
+			function doi_kinh(openkinh, closekinh1, closekinh2, closekinh3){
 				document.getElementById(openkinh).style.display = "block";
 				document.getElementById(closekinh1).style.display = "none";
 				document.getElementById(closekinh2).style.display = "none";
+				document.getElementById(closekinh3).style.display = "none";
 				active_kinh = openkinh;
 				$('#'+active_kinh+' .learn_part').show();
 				$('#'+active_kinh+' .hide_percentage').hide();
@@ -127,6 +131,9 @@
 			#kinhmen .title{
 			color: #e81d43
 			}
+			#kinhsangsoi .title{
+			color: #6D24CF;
+			}
 			#kinhtin .center{
 			color: #0C567B;
 			}
@@ -135,6 +142,9 @@
 			}
 			#kinhmen .center{
 			color: #a81631;//#800e23;
+			}
+			#kinhsangsoi .center{
+			color: #510FAA;
 			}
 			.contentmain{
 			background: white none repeat scroll 0 0;
@@ -174,6 +184,10 @@
 				color: blue;
 			}
 			
+			#kinhsangsoi .part_active{
+				color: #C29620;
+			}
+			
 			.hide_text{
 				color:blue;
 				background-color:white; 
@@ -202,22 +216,32 @@
 				background-color:white; 
 				border: 1px solid #e81d43;;
 			}
+			.menu{
+				padding-bottom: 25px;
+			}
+			.menu button, .menu input{
+				padding: 5px 10px;
+				font-size: 16px;
+			}
 		</style>
 		
   <body>
-		<div>
+		<div class="menu">
 			<span>
 				<button onclick="hide_part_of_kinh()">Hide (%)</button>
 			</span>
 			<span><input id="percentage_hide" value="20" style="width:30px"></input>
 			<span>
-				<button onclick="doi_kinh('kinhtin','kinhcay','kinhmen')">Kinh Tin</button>
+				<button onclick="doi_kinh('kinhtin','kinhcay','kinhmen','kinhsangsoi')">Kinh Tin</button>
 			</span>
 			<span>
-				<button onclick="doi_kinh('kinhcay','kinhtin','kinhmen')">Kinh Cậy</button>
+				<button onclick="doi_kinh('kinhcay','kinhtin','kinhmen','kinhsangsoi')">Kinh Cậy</button>
 			</span>
 			<span>
-				<button onclick="doi_kinh('kinhmen','kinhcay','kinhtin')">Kinh Mến</button>
+				<button onclick="doi_kinh('kinhmen','kinhcay','kinhtin','kinhsangsoi')">Kinh Mến</button>
+			</span>
+			<span>
+				<button onclick="doi_kinh('kinhsangsoi','kinhcay','kinhtin','kinhmen')">Kinh Sáng Soi</button>
 			</span>
 		</div>
 		<div id="kinhtin" class="kinh" style="display: block;">
@@ -231,8 +255,7 @@
 				<image src="https://dangnmd.github.io/chien_non/350115481_973605643658151_4720933882453961144_n-Photoroom.png-Photoroom.png" width="145" height="145"/>
 			</div>
 			<div class="center learn_part">
-				<span class="part">Lạy Chúa, </span>
-				<span class="part">con tin thật có một Đức Chúa Trời là Đấng thưởng phạt vô cùng. </span>
+				<span class="part">Lạy Chúa, con tin thật có một Đức Chúa Trời là Đấng thưởng phạt vô cùng. </span>
 				<span class="part">Con lại tin thật Đức Chúa Trời có ba Ngôi, </span>
 				<span class="part">mà Ngôi Thứ Hai đã xuống thế làm người, </span>
 				<span class="part">chịu nạn chịu chết mà chuộc tội cho thiên hạ. </span>
@@ -254,8 +277,7 @@
 				<image src="https://dangnmd.github.io/chien_non/350115481_973605643658151_4720933882453961144_n-Photoroom.png-Photoroom.png" width="145" height="145"/>
 			</div>
 			<div class="center learn_part">
-				<span class="part">Lạy Chúa, </span>
-				<span class="part">con trông cậy vững vàng, </span>
+				<span class="part">Lạy Chúa, con trông cậy vững vàng, </span>
 				<span class="part">vì công nghiệp Đức Chúa Giêsu </span>
 				<span class="part">thì Chúa sẽ ban ơn cho con giữ đạo nên ở đời này, </span>
 				<span class="part">cho ngày sau được lên Thiên Đàng </span>
@@ -276,10 +298,27 @@
 				<image src="https://dangnmd.github.io/chien_non/350115481_973605643658151_4720933882453961144_n-Photoroom.png-Photoroom.png" width="145" height="145"/>
 			</div>
 			<div class="center learn_part">
-				<span class="part">Lạy Chúa, </span>
-				<span class="part">con kính mến Chúa hết lòng hết sức trên hết mọi sự, </span>
+				<span class="part">Lạy Chúa, con kính mến Chúa hết lòng hết sức trên hết mọi sự, </span>
 				<span class="part">vì Chúa là Đấng trọn tốt trọn lành vô cùng, </span>
 				<span class="part">lại vì Chúa thì con thương yêu người ta như mình con vậy. Amen.</span>
+			</div>
+			<div class="center hide_percentage"></div>
+		</div>
+		
+		<div id="kinhsangsoi" class="kinh" style="display: none;">
+			<div class="contentmain">
+				<image src="https://dangnmd.github.io/chien_non/logo_512x512-Photoroom.png-Photoroom.png" width="145" height="145"/>
+			</div>
+			<div class="contentCenter">
+				<h2 class="title">Kinh Sáng Soi</h2>
+			</div>
+			<div class="contentRight">
+				<image src="https://dangnmd.github.io/chien_non/350115481_973605643658151_4720933882453961144_n-Photoroom.png-Photoroom.png" width="145" height="145"/>
+			</div>
+			<div class="center learn_part">
+				<span class="part">Cúi xin Chúa sáng soi, cho chúng con được biết việc phải làm, </span>
+				<span class="part">cùng khi làm, xin Chúa giúp đỡ cho mỗi kinh mỗi việc chúng con, </span>
+				<span class="part">từ khởi sự cho đến hoàn thành đều nhờ bởi ơn Chúa. Amen</span>
 			</div>
 			<div class="center hide_percentage"></div>
 		</div>
