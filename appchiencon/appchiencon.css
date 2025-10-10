@@ -1,0 +1,127 @@
+html {
+  scroll-behavior: smooth; /* Cuộn mượt toàn trang */
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f8fafc;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.controls {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+#toggleAll {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+#toggleAll:hover {
+  background: #2563eb;
+}
+
+.accordion-item {
+  border-bottom: 1px solid #ddd;
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 15px;
+  font-size: 18px;
+  background: #f1f5f9;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.accordion-header:hover {
+  background: #e2e8f0;
+}
+
+.accordion-header.active {
+  background: #cbd5e1;
+  color: #1e293b;
+}
+
+.arrow {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.accordion-header.active .arrow {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  display: none;
+  padding: 15px 20px;
+  background: #fff;
+  animation: fadeIn 0.3s ease;
+}
+
+.accordion-content img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 15px;
+  margin-right: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.accordion-content li{
+	padding: 15px 0px;
+}
+
+.anh-minh-hoa {
+  display: flex;
+  gap: 10px; /* khoảng cách giữa hai ảnh */
+  align-items: center; /* canh giữa theo chiều dọc */
+}
+
+.anh-minh-hoa img {
+  //width: 30%;  /* 👈 chỉnh kích thước ảnh ở đây */
+  //height: 100px; /* 👈 có thể bỏ nếu muốn auto theo tỉ lệ */
+  object-fit: contain; /* giúp ảnh không bị méo */
+}
+
+.logo{
+	text-align: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
