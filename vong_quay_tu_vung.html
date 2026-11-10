@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vòng quay từ vựng</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#20243a;--muted:#6d7285;--primary:#6658d3;--primary2:#8578f0;--line:#e4e7f0;--good:#16865b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1050px;margin:0 auto;padding:30px 18px 56px}
+header{text-align:center;margin-bottom:26px}h1{margin:0 0 8px;font-size:clamp(26px,4vw,38px)}header p{margin:0;color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin:16px 0;box-shadow:0 5px 20px #252b4810}
+h2{font-size:19px;margin:0 0 14px}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field label{display:block;font-weight:650;margin-bottom:7px}.field textarea,.field input{width:100%;border:1px solid #d8dbea;border-radius:11px;padding:12px 13px;font:inherit;color:var(--ink);outline:none;background:#fff}
+.field textarea{min-height:112px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px #6658d31a}
+.hint{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px;margin-top:7px}.count{font-weight:700;color:var(--primary)}
+.owner-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}.draw-box{border:2px dashed #c9c4f3;background:#faf9ff;border-radius:16px;padding:18px;margin-top:18px}
+.draw-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap}.draw-controls .field{width:150px}.draw-controls input{height:46px}
+button{border:0;border-radius:11px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;transition:.18s}
+button:disabled{opacity:.45;cursor:not-allowed}.primary{background:var(--primary);color:white}.primary:hover:not(:disabled){background:#5143c0;transform:translateY(-1px)}.secondary{background:#eeedfb;color:#5143c0}.danger{background:#fff0f0;color:#b33b3b}
+.result{margin-top:16px;padding:15px;border-radius:12px;background:#f5f4ff;border:1px solid #e4e0ff}.result strong{color:var(--primary)}.word-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{padding:7px 11px;border-radius:999px;background:#fff;border:1px solid #dedaf8;font-weight:600;font-size:14px}
+.wheel-layout{display:grid;grid-template-columns:minmax(260px,440px) 1fr;gap:28px;align-items:center}
+.wheel-wrap{position:relative;width:min(100%,420px);margin:0 auto;aspect-ratio:1}
+canvas{width:100%;height:100%;display:block}
+.pointer{position:absolute;z-index:2;top:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:34px solid #ef5967;filter:drop-shadow(0 2px 2px #0003)}
+.wheel-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:#fff;border:7px solid #eeeaff;display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--primary);box-shadow:0 2px 8px #0002;pointer-events:none}
+.wheel-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px;justify-content:center}.side-info{color:var(--muted);font-size:14px;line-height:1.55}.side-info strong{color:var(--ink)}
+.empty{color:var(--muted);font-style:italic}.winner{font-size:22px;font-weight:800;color:var(--good)}
+.results-list{display:grid;gap:12px}.player-result{border:1px solid var(--line);border-radius:13px;padding:14px}.player-result h3{margin:0;font-size:16px}.player-result p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.notice{color:#a15d00;background:#fff8e8;border:1px solid #f5dfb5;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:12px}
+@media(max-width:720px){.field-grid,.owner-row,.wheel-layout{grid-template-columns:1fr}.panel{padding:16px}.wheel-layout{gap:12px}.side-info{text-align:center}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>🎯 Vòng quay từ vựng</h1><p>Chia từ ngẫu nhiên và chọn người chơi bằng vòng quay may mắn!</p></header>
+
+<section class="panel">
+  <h2>1. Chuẩn bị dữ liệu</h2>
+  <div class="field-grid">
+    <div class="field">
+      <label for="words">Danh sách từ (words)</label>
+      <textarea id="words" spellcheck="false"></textarea>
+      <div class="hint"><span>Mỗi từ cách nhau bằng dấu phẩy</span><span class="count" id="wordCount">0 từ</span></div>
+    </div>
+    <div class="field">
+      <label for="players">Danh sách người chơi (players)</label>
+      <textarea id="players" placeholder="Ví dụ: An, Bình, Chi, Dũng"></textarea>
+      <div class="hint"><span>Mỗi tên cách nhau bằng dấu phẩy</span><span class="count" id="playerCount">0 người</span></div>
+    </div>
+  </div>
+  <div class="owner-row" style="margin-top:16px">
+    <div class="field"><label for="owner">Tên người đang điều khiển (owner)</label><input id="owner" placeholder="Nhập tên của bạn"></div>
+    <div style="display:flex;align-items:end"><button class="secondary" id="applyBtn" style="width:100%">Áp dụng dữ liệu / Chia lại từ</button></div>
+  </div>
+  <div class="notice">Khi thay đổi danh sách từ hoặc người chơi, hãy nhấn “Áp dụng dữ liệu” để tạo lại vòng quay và chia từ mới. Các từ được chia đều; nếu dư, một số người sẽ nhận thêm 1 từ.</div>
+</section>
+
+<section class="panel">
+  <h2>2. Random từ cho người điều khiển</h2>
+  <div class="draw-box">
+    <div class="draw-controls">
+      <div class="field"><label for="numberRandom">Số lượng từ</label><input id="numberRandom" type="number" min="1" value="5"></div>
+      <button class="primary" id="randomBtn">🎲 Random</button>
+    </div>
+    <div id="ownerResult" class="empty" style="margin-top:14px">Nhập tên người điều khiển và nhấn Random để lấy từ.</div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>3. Vòng quay chọn người chơi</h2>
+  <div class="wheel-layout">
+    <div>
+      <div class="wheel-wrap">
+        <div class="pointer"></div><canvas id="wheel" width="800" height="800"></canvas><div class="wheel-center">QUAY</div>
+      </div>
+      <div class="wheel-actions">
+        <button class="primary" id="spinBtn">🎡 Quay vòng quay</button>
+        <button class="danger" id="resetBtn">↻ Reset</button>
+      </div>
+    </div>
+    <div class="side-info">
+      <p><strong>Cách chơi:</strong> Nhấn “Quay vòng quay” để chọn ngẫu nhiên một người. Người được chọn sẽ nhận phần từ đã chia sẵn và tự động bị loại khỏi vòng quay.</p>
+      <p id="remainingInfo">Chưa có người chơi.</p>
+      <p id="wheelStatus">Hãy nhập danh sách người chơi rồi nhấn “Áp dụng dữ liệu”.</p>
+    </div>
+  </div>
+  <div id="winnerResult" style="margin-top:20px"></div>
+</section>
+</main>
+<script>
+const defaultWords = "nóng, khát, lạnh, đói, thấp, già, yếu, nhỏ, đen, nâu, ấm, no, đẹp gái, hạnh phúc, nghèo, gầy, trắng, cam, mát, mệt, xấu, buồn, giàu, mập, xám, vàng, tím, đẹp trai, xanh biển, đỏ, xanh lá, hồng, cao, khỏe, trẻ, rẻ, mắc tiền, rộng, hẹp, hiện đại, sặc sỡ, sáng, tối, dài, ngắn, sạch, bẩn, an toàn, nguy hiểm, ướt, khô, sớm, trễ, nhanh, chậm, bận rộn, rảnh rỗi, khác, giống, rộng lớn, tiện lợi, trong lành, phù hợp, ẩm, dễ thương, mới, thú vị, tốt bụng, thông minh, ngon, thoải mái, phổ biến, hiện tại, rõ ràng, không rõ ràng, dễ dàng, khó khăn, yên tĩnh, ồn ào, nắng, có mây, mưa, có gió";
+const $ = id => document.getElementById(id);
+const colors = ["#7567df","#f08b63","#42a995","#e6b94f","#4f91d5","#d86f9e","#7caa63","#9b7bd1","#d47d54","#55a8b8"];
+let allWords=[], allPlayers=[], activePlayers=[], assignments={}, results=[], rotation=0, spinning=false;
+$("words").value=defaultWords;
+function parseList(value){return value.split(",").map(x=>x.trim()).filter(Boolean)}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function updateCounts(){
+ const w=parseList($("words").value),p=parseList($("players").value);
+ $("wordCount").textContent=w.length+" từ";$("playerCount").textContent=p.length+" người";
+}
+function applyData(){
+ allWords=parseList($("words").value);allPlayers=[...new Set(parseList($("players").value))];
+ if(!allWords.length){alert("Bạn hãy nhập ít nhất một từ.");return}
+ if(!allPlayers.length){alert("Bạn hãy nhập ít nhất một người chơi.");return}
+ activePlayers=[...allPlayers];results=[];assignments={};
+ const mixed=shuffle(allWords);
+ allPlayers.forEach((name,i)=>assignments[name]=[]);
+ mixed.forEach((word,i)=>assignments[allPlayers[i%allPlayers.length]].push(word));
+ rotation=0;drawWheel();renderResults();
+ $("winnerResult").innerHTML="";
+ $("wheelStatus").textContent="Đã chia "+allWords.length+" từ cho "+allPlayers.length+" người chơi.";
+ $("remainingInfo").textContent="Còn "+activePlayers.length+" người trong vòng quay.";
+ $("spinBtn").disabled=false;
+ $("ownerResult").innerHTML='<span class="empty">Dữ liệu đã cập nhật. Bạn có thể Random từ cho owner.</span>';
+}
+function drawWheel(){
+ const canvas=$("wheel"),ctx=canvas.getContext("2d"),cx=400,cy=400,r=380;
+ ctx.clearRect(0,0,800,800);
+ if(!activePlayers.length){ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle="#eeeef5";ctx.fill();ctx.fillStyle="#777";ctx.font="bold 28px sans-serif";ctx.textAlign="center";ctx.fillText("Đã quay hết!",cx,cy);return}
+ const arc=Math.PI*2/activePlayers.length;
+ activePlayers.forEach((name,i)=>{
+  const start=rotation-Math.PI/2+i*arc,end=start+arc;
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,end);ctx.closePath();ctx.fillStyle=colors[i%colors.length];ctx.fill();
+  ctx.strokeStyle="#fff";ctx.lineWidth=5;ctx.stroke();
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(start+arc/2);
+  ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillStyle="#fff";
+  let font=activePlayers.length>14?22:activePlayers.length>8?26:32;ctx.font=`bold ${font}px sans-serif`;
+  let label=name.length>18?name.slice(0,17)+"…":name;
+  ctx.shadowColor="#0005";ctx.shadowBlur=3;ctx.fillText(label,r-28,0);ctx.restore();
+ });
+ ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle="#fff";ctx.lineWidth=12;ctx.stroke();
+}
+function renderResults(){
+ const target=$("winnerResult");
+ if(!results.length){target.innerHTML='<p class="empty">Kết quả người chơi được chọn sẽ hiển thị ở đây.</p>';return}
+ target.innerHTML='<h3 style="margin:0 0 12px">Kết quả các lượt quay</h3><div class="results-list">'+results.map((r,i)=>`<div class="player-result"><h3>🏆 ${i+1}. ${escapeHtml(r.name)}</h3><p>${r.words.length} từ được giao</p><div class="word-list">${r.words.map(w=>`<span class="chip">${escapeHtml(w)}</span>`).join("")}</div></div>`).join("")+'</div>';
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function randomOwnerWords(){
+ if(!allWords.length){alert("Hãy áp dụng dữ liệu trước.");return}
+ const owner=$("owner").value.trim();if(!owner){alert("Bạn hãy nhập tên owner.");$("owner").focus();return}
+ const n=Number.parseInt($("numberRandom").value,10);
+ if(!Number.isInteger(n)||n<1){alert("Số lượng từ phải lớn hơn 0.");return}
+ const chosen=shuffle(allWords).slice(0,Math.min(n,allWords.length));
+ $("ownerResult").innerHTML=`<div><strong>${escapeHtml(owner)}</strong> nhận được ${chosen.length} từ:</div><div class="word-list">${chosen.map(w=>`<span class="chip">${escapeHtml(w)}</span>`).join("")}</div>${n>allWords.length?`<p class="hint">Danh sách chỉ có ${allWords.length} từ nên đã lấy toàn bộ số từ hiện có.</p>`:""}`;
+}
+function spin(){
+ if(spinning||!activePlayers.length)return;
+ if(!allPlayers.length){alert("Hãy áp dụng dữ liệu trước.");return}
+ spinning=true;$("spinBtn").disabled=true;
+ const count=activePlayers.length, winnerIndex=Math.floor(Math.random()*count),arc=2*Math.PI/count;
+ // Segment center is aligned with the pointer at the top after rotation.
+ const current=rotation;
+ const targetMod=(-(winnerIndex+.5)*arc)%(2*Math.PI);
+ let delta=(targetMod-current)%(2*Math.PI);if(delta<0)delta+=2*Math.PI;
+ const extra=(6+Math.floor(Math.random()*3))*2*Math.PI;
+ const start=current, end=current+extra+delta, duration=4300, began=performance.now();
+ function frame(now){
+  const t=Math.min(1,(now-began)/duration),ease=1-Math.pow(1-t,4);
+  rotation=start+(end-start)*ease;drawWheel();
+  if(t<1){requestAnimationFrame(frame);return}
+  rotation=((rotation%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+  const winner=activePlayers[winnerIndex],words=assignments[winner]||[];
+  results.push({name:winner,words});
+  activePlayers.splice(winnerIndex,1);
+  drawWheel();renderResults();spinning=false;
+  $("wheelStatus").innerHTML=`<span class="winner">🎉 ${escapeHtml(winner)} được chọn!</span><br>Đã nhận ${words.length} từ.`;
+  $("remainingInfo").textContent="Còn "+activePlayers.length+" người trong vòng quay.";
+  $("spinBtn").disabled=!activePlayers.length;
+ }
+ requestAnimationFrame(frame);
+}
+function resetGame(){
+ if(!allPlayers.length){applyData();return}
+ activePlayers=[...allPlayers];results=[];assignments={};
+ const mixed=shuffle(allWords);
+ allPlayers.forEach(name=>assignments[name]=[]);
+ mixed.forEach((word,i)=>assignments[allPlayers[i%allPlayers.length]].push(word));
+ rotation=0;drawWheel();renderResults();
+ $("winnerResult").innerHTML="";
+ $("wheelStatus").textContent="Vòng quay đã được reset và từ đã được chia lại.";
+ $("remainingInfo").textContent="Còn "+activePlayers.length+" người trong vòng quay.";
+ $("spinBtn").disabled=false;
+}
+$("words").addEventListener("input",updateCounts);$("players").addEventListener("input",updateCounts);
+$("applyBtn").addEventListener("click",applyData);$("randomBtn").addEventListener("click",randomOwnerWords);
+$("spinBtn").addEventListener("click",spin);$("resetBtn").addEventListener("click",resetGame);
+updateCounts();drawWheel();
+</script>
+</body>
+</html>
