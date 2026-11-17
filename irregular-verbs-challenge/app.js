@@ -1,10 +1,10 @@
 // Firebase modular SDK. Paste your Firebase Web App config in firebaseConfig below.
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.15.0/firebase-app.js';
-import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.15.0/firebase-auth.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
 import {
   getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc,
   deleteDoc, onSnapshot, query, orderBy, serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/11.15.0/firebase-firestore.js';
+} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAL6Gvt1mXzwMUIAleOaO5H00NOsIb_KVc",
