@@ -134,11 +134,47 @@ function renderQuiz(){
   $('quizTableBody').innerHTML=state.quiz.map((w,i)=>`<tr data-row="${i}"><td>${i+1}</td><td>${escapeHtml(w.vi)}</td><td><input data-answer="${i}" data-field="v1" aria-label="${escapeHtml(w.vi)} verb 1" autocomplete="off"></td><td><input data-answer="${i}" data-field="v2" aria-label="${escapeHtml(w.vi)} verb 2" autocomplete="off"></td><td><input data-answer="${i}" data-field="v3" aria-label="${escapeHtml(w.vi)} verb 3" autocomplete="off"></td></tr>`).join('');updateProgress();
 }
 function updateProgress(){const inputs=[...document.querySelectorAll('#quizTableBody input')];const filled=inputs.filter(x=>clean(x.value)).length;const percent=inputs.length?Math.round(filled/inputs.length*100):0;$('progressText').textContent=`${filled/3|0} / ${state.quiz.length} từ đã điền ít nhất một ô`;$('progressPercent').textContent=percent+'%';$('progressBar').style.width=percent+'%'}
-function getAnswers(){return state.quiz.map((w,i)=>({word:w,v1:$(`input[data-answer="${i}"][data-field="v1"]`)?.value||'',v2:$(`input[data-answer="${i}"][data-field="v2"]`)?.value||'',v3:$(`input[data-answer="${i}"][data-field="v3"]`)?.value||''}))}
+function getAnswers() {
+  const inputs = document.querySelectorAll(
+    '#quizTableBody input[data-answer][data-field]'
+  );
+
+  const answers = state.quiz.map(word => ({
+    word,
+    v1: '',
+    v2: '',
+    v3: ''
+  }));
+
+  inputs.forEach(input => {
+    const index = Number(input.dataset.answer);
+    const field = input.dataset.field;
+
+    if (answers[index] && ['v1', 'v2', 'v3'].includes(field)) {
+      answers[index][field] = input.value.trim();
+    }
+  });
+
+  console.log('DEBUG - Answers collected:', answers);
+
+  return answers;
+}
 function checkOne(answer,key){const accepted=String(answer.word[key]||'').split(',').map(norm);return accepted.includes(norm(answer[key]))}
 async function submitQuiz(){
   if(state.submitted)return;if(!confirm('Bạn chắc chắn muốn hoàn tất và nộp bài? Sau khi nộp sẽ không thể sửa đáp án.'))return;
-  const answers=getAnswers();const details=answers.map(a=>({vi:a.word.vi,v1:a.v1,v2:a.v2,v3:a.v3,ok1:checkOne(a,'v1'),ok2:checkOne(a,'v2'),ok3:checkOne(a,'v3'),correct:{v1:a.word.v1,v2:a.word.v2,v3:a.word.v3}}));
+  const answers=getAnswers();
+  const filledCount = answers.reduce((count, a) => {
+  return count +
+    Number(!!a.v1.trim()) +
+    Number(!!a.v2.trim()) +
+    Number(!!a.v3.trim());
+}, 0);
+
+if (filledCount === 0) {
+  toast('Không đọc được đáp án. Vui lòng kiểm tra lại bài làm!');
+  return;
+}
+  const details=answers.map(a=>({vi:a.word.vi,v1:a.v1,v2:a.v2,v3:a.v3,ok1:checkOne(a,'v1'),ok2:checkOne(a,'v2'),ok3:checkOne(a,'v3'),correct:{v1:a.word.v1,v2:a.word.v2,v3:a.word.v3}}));
   const correct=details.reduce((n,d)=>n+Number(d.ok1)+Number(d.ok2)+Number(d.ok3),0);const total=details.length*3;const correctWords=details.filter(d=>d.ok1&&d.ok2&&d.ok3).length;
   const payload={uid:state.uid,name:state.me.name,details,correct,total,correctWords,totalWords:details.length,score:Math.round(correct/total*100),submittedAt:serverTimestamp()};
   try{await setDoc(doc(state.db,state.roomCode?ROOMS:ROOMS,state.roomCode,'submissions',state.uid),payload);await updateDoc(doc(state.db,ROOMS,state.roomCode,'participants',state.uid),{submitted:true,score:payload.score,correct,total,submittedAt:serverTimestamp()});state.submitted=true;renderResult(payload);renderRoomState();toast('Đã nộp bài thành công!')}
