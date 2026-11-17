@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#3157d5">
+  <title>Irregular Verbs Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" id="brandHome"><span class="brand-mark">V</span><span>Irregular Verbs <b>Challenge</b></span></a>
+    <span class="live-pill"><i></i> Class challenge</span>
+  </header>
+
+  <main class="shell">
+    <section id="homeView" class="view">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">ENGLISH • LEARN • COMPETE</span>
+          <h1>Thử thách<br><span>động từ bất quy tắc</span></h1>
+          <p>Tạo phòng, rủ bạn bè cùng kiểm tra và xem ai là người nhớ động từ tốt nhất!</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="showCreate">＋ Tạo phòng thi</button>
+            <button class="btn btn-light" id="showJoin">Tham gia phòng <span>→</span></button>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="book">ABC</div><div class="float-card card-top">V1 · V2 · V3</div><div class="float-card card-bottom">✦ Keep learning!</div></div>
+      </div>
+
+      <div class="home-grid">
+        <section class="panel" id="createPanel">
+          <div class="panel-heading"><div><span class="eyebrow">HOST A ROOM</span><h2>Tạo phòng kiểm tra</h2></div><span class="heading-icon">✦</span></div>
+          <label for="hostName">Tên của bạn</label>
+          <input id="hostName" maxlength="30" placeholder="Ví dụ: Đăng" autocomplete="name">
+          <label for="questionCount">Số lượng từ cần kiểm tra</label>
+          <div class="count-row"><input id="questionCount" type="number" min="1" max="100" value="20"><span>từ ngẫu nhiên</span></div>
+          <button class="btn btn-primary btn-block" id="createRoomBtn">Tạo mã phòng</button>
+          <p class="hint">Bạn sẽ là chủ phòng và có thể bắt đầu bài thi khi mọi người đã vào.</p>
+        </section>
+
+        <section class="panel" id="joinPanel">
+          <div class="panel-heading"><div><span class="eyebrow">JOIN THE GAME</span><h2>Tham gia phòng</h2></div><span class="heading-icon">↗</span></div>
+          <label for="playerName">Tên của bạn</label>
+          <input id="playerName" maxlength="30" placeholder="Nhập tên hiển thị">
+          <label for="roomCodeInput">Mã phòng</label>
+          <input id="roomCodeInput" class="code-input" maxlength="6" placeholder="VD: A7K2QX" autocomplete="off">
+          <button class="btn btn-dark btn-block" id="joinRoomBtn">Vào phòng <span>→</span></button>
+          <p class="hint">Nhập đúng mã phòng do chủ phòng cung cấp.</p>
+        </section>
+      </div>
+
+      <section class="panel words-panel">
+        <div class="panel-heading words-heading"><div><span class="eyebrow">WORD BANK</span><h2>Ngân hàng động từ</h2><p class="subtle">Thêm từ mới để sử dụng trong các bài kiểm tra tiếp theo.</p></div><span class="word-count" id="wordCount">0 từ</span></div>
+        <div class="word-form">
+          <div><label for="wordVi">Tiếng Việt</label><input id="wordVi" placeholder="thì, là, ở"></div>
+          <div><label for="wordV1">Verb 1</label><input id="wordV1" placeholder="be"></div>
+          <div><label for="wordV2">Verb 2</label><input id="wordV2" placeholder="was, were"></div>
+          <div><label for="wordV3">Verb 3</label><input id="wordV3" placeholder="been"></div>
+          <button class="btn btn-primary" id="addWordBtn">＋ Thêm từ</button>
+        </div>
+        <div class="word-tools"><span class="subtle" id="wordStatus">Đang tải ngân hàng từ...</span><div class="tool-buttons"><button class="btn btn-small btn-light" id="exportWordsBtn">Xuất danh sách</button><label class="btn btn-small btn-light file-label" for="importWordsFile">Nhập danh sách</label><input id="importWordsFile" type="file" accept=".txt,.csv,.json" hidden></div></div>
+        <div class="word-list-wrap"><table class="word-list"><thead><tr><th>Tiếng Việt</th><th>Verb 1</th><th>Verb 2</th><th>Verb 3</th><th></th></tr></thead><tbody id="wordTableBody"><tr><td colspan="5" class="empty-cell">Chưa có dữ liệu.</td></tr></tbody></table></div>
+        <p class="hint">Mọi người truy cập website đều có thể thêm hoặc xóa từ. Dữ liệu được lưu chung trên Firebase.</p>
+      </section>
+    </section>
+
+    <section id="roomView" class="view hidden">
+      <div class="room-header panel"><div><span class="eyebrow" id="roomModeLabel">ROOM</span><h1 id="roomTitle">Phòng kiểm tra</h1><p class="subtle" id="roomSubtitle"></p></div><div class="room-code-box"><span>MÃ PHÒNG</span><strong id="roomCodeDisplay">------</strong><button id="copyRoomCode" class="copy-btn">Sao chép</button></div></div>
+      <div class="room-layout">
+        <section class="panel main-room-panel">
+          <div class="panel-heading"><div><span class="eyebrow">YOUR CHALLENGE</span><h2 id="roomSectionTitle">Đang chờ bắt đầu</h2></div><span class="status-pill" id="roomStatus">Đang chờ</span></div>
+          <div id="waitingArea"><div class="waiting-illustration">⌛</div><h3>Chờ chủ phòng bắt đầu nhé!</h3><p class="subtle">Khi bài kiểm tra bắt đầu, danh sách từ sẽ xuất hiện tại đây.</p><button class="btn btn-primary hidden" id="startQuizBtn">Bắt đầu kiểm tra</button><button class="btn btn-dark hidden" id="finishRoomBtn">Kết thúc phòng</button></div>
+          <div id="quizArea" class="hidden"><div class="quiz-progress"><span id="progressText">0 / 0 từ</span><span id="progressPercent">0%</span></div><div class="progress-track"><div id="progressBar"></div></div><div class="table-scroll"><table class="quiz-table"><thead><tr><th>#</th><th>Tiếng Việt</th><th>Verb 1</th><th>Verb 2</th><th>Verb 3</th></tr></thead><tbody id="quizTableBody"></tbody></table></div><div class="quiz-footer"><span class="hint">Không phân biệt chữ hoa/thường. Có thể bỏ trống câu chưa biết.</span><button class="btn btn-primary" id="submitQuizBtn">Hoàn tất & nộp bài</button></div></div>
+          <div id="resultArea" class="hidden"></div>
+        </section>
+        <aside class="panel participants-panel"><div class="panel-heading"><div><span class="eyebrow">IN THIS ROOM</span><h2>Người tham gia</h2></div><span class="participant-count" id="participantCount">0</span></div><div id="participantList" class="participant-list"></div><div class="host-note" id="hostNote">Chia sẻ mã phòng để các bạn cùng tham gia nhé.</div></aside>
+      </div>
+      <section class="panel host-results hidden" id="hostResults"><div class="panel-heading"><div><span class="eyebrow">LIVE SCOREBOARD</span><h2>Bảng xếp hạng & bài làm</h2></div><span class="status-pill">Kết quả phòng</span></div><div class="table-scroll"><table class="score-table"><thead><tr><th>Hạng</th><th>Người chơi</th><th>Đúng</th><th>Tổng câu</th><th>Điểm</th><th>Thời gian</th><th></th></tr></thead><tbody id="scoreTableBody"></tbody></table></div><div id="submissionDetail" class="submission-detail hidden"></div></section>
+      <button class="btn btn-light back-btn" id="backHomeBtn">← Về trang chủ</button>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <footer>Made for curious English learners <span>✦</span></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
