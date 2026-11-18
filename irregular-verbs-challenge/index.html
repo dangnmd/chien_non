@@ -37,7 +37,9 @@
           <label for="hostName">Tên của bạn</label>
           <input id="hostName" maxlength="30" placeholder="Ví dụ: Đăng" autocomplete="name">
           <label for="questionCount">Số lượng từ cần kiểm tra</label>
-          <div class="count-row"><input id="questionCount" type="number" min="1" max="100" value="20"><span>từ ngẫu nhiên</span></div>
+          <div class="count-row"><input id="questionCount" type="number" min="1" max="100" value="20"><span id="selectedWordCount">trong số từ đã chọn</span></div>
+          <label for="hintLimit">Số lượt trợ giúp cho mỗi người</label>
+          <div class="count-row"><input id="hintLimit" type="number" min="0" max="100" value="10"><span>hint / người</span></div>
           <button class="btn btn-primary btn-block" id="createRoomBtn">Tạo mã phòng</button>
           <p class="hint">Bạn sẽ là chủ phòng và có thể bắt đầu bài thi khi mọi người đã vào.</p>
         </section>
@@ -63,7 +65,7 @@
           <button class="btn btn-primary" id="addWordBtn">＋ Thêm từ</button>
         </div>
         <div class="word-tools"><span class="subtle" id="wordStatus">Đang tải ngân hàng từ...</span><div class="tool-buttons"><button class="btn btn-small btn-light" id="exportWordsBtn">Xuất danh sách</button><label class="btn btn-small btn-light file-label" for="importWordsFile">Nhập danh sách</label><input id="importWordsFile" type="file" accept=".txt,.csv,.json" hidden></div></div>
-        <div class="word-list-wrap"><table class="word-list"><thead><tr><th>Tiếng Việt</th><th>Verb 1</th><th>Verb 2</th><th>Verb 3</th><th></th></tr></thead><tbody id="wordTableBody"><tr><td colspan="5" class="empty-cell">Chưa có dữ liệu.</td></tr></tbody></table></div>
+        <div class="bank-controls"><input id="wordSearch" placeholder="Tìm từ tiếng Việt hoặc Verb 1..." aria-label="Tìm từ trong ngân hàng"><button class="btn btn-small btn-light" id="selectAllWords">Chọn tất cả</button><button class="btn btn-small btn-light" id="clearWordSelection">Bỏ chọn</button><span id="selectionSummary" class="subtle"></span></div><div class="word-list-wrap"><table class="word-list"><thead><tr><th>Chọn</th><th>Tiếng Việt</th><th>Verb 1</th><th>Verb 2</th><th>Verb 3</th><th></th></tr></thead><tbody id="wordTableBody"><tr><td colspan="6" class="empty-cell">Chưa có dữ liệu.</td></tr></tbody></table></div>
         <p class="hint">Mọi người truy cập website đều có thể thêm hoặc xóa từ. Dữ liệu được lưu chung trên Firebase.</p>
       </section>
     </section>
@@ -74,12 +76,12 @@
         <section class="panel main-room-panel">
           <div class="panel-heading"><div><span class="eyebrow">YOUR CHALLENGE</span><h2 id="roomSectionTitle">Đang chờ bắt đầu</h2></div><span class="status-pill" id="roomStatus">Đang chờ</span></div>
           <div id="waitingArea"><div class="waiting-illustration">⌛</div><h3>Chờ chủ phòng bắt đầu nhé!</h3><p class="subtle">Khi bài kiểm tra bắt đầu, danh sách từ sẽ xuất hiện tại đây.</p><button class="btn btn-primary hidden" id="startQuizBtn">Bắt đầu kiểm tra</button><button class="btn btn-dark hidden" id="finishRoomBtn">Kết thúc phòng</button></div>
-          <div id="quizArea" class="hidden"><div class="quiz-progress"><span id="progressText">0 / 0 từ</span><span id="progressPercent">0%</span></div><div class="progress-track"><div id="progressBar"></div></div><div class="table-scroll"><table class="quiz-table"><thead><tr><th>#</th><th>Tiếng Việt</th><th>Verb 1</th><th>Verb 2</th><th>Verb 3</th></tr></thead><tbody id="quizTableBody"></tbody></table></div><div class="quiz-footer"><span class="hint">Không phân biệt chữ hoa/thường. Có thể bỏ trống câu chưa biết.</span><button class="btn btn-primary" id="submitQuizBtn">Hoàn tất & nộp bài</button></div></div>
+          <div id="quizArea" class="hidden"><div class="hint-meter" id="hintMeter"></div><div class="quiz-progress"><span id="progressText">0 / 0 từ</span><span id="progressPercent">0%</span></div><div class="progress-track"><div id="progressBar"></div></div><div class="table-scroll"><table class="quiz-table"><thead><tr><th>#</th><th>Tiếng Việt</th><th>Verb 1</th><th>Verb 2</th><th>Verb 3</th><th>Hint</th></tr></thead><tbody id="quizTableBody"></tbody></table></div><div class="quiz-footer"><span class="hint">Không phân biệt chữ hoa/thường. Có thể bỏ trống câu chưa biết.</span><button class="btn btn-primary" id="submitQuizBtn">Hoàn tất & nộp bài</button></div></div>
           <div id="resultArea" class="hidden"></div>
         </section>
         <aside class="panel participants-panel"><div class="panel-heading"><div><span class="eyebrow">IN THIS ROOM</span><h2>Người tham gia</h2></div><span class="participant-count" id="participantCount">0</span></div><div id="participantList" class="participant-list"></div><div class="host-note" id="hostNote">Chia sẻ mã phòng để các bạn cùng tham gia nhé.</div></aside>
       </div>
-      <section class="panel host-results hidden" id="hostResults"><div class="panel-heading"><div><span class="eyebrow">LIVE SCOREBOARD</span><h2>Bảng xếp hạng & bài làm</h2></div><span class="status-pill">Kết quả phòng</span></div><div class="table-scroll"><table class="score-table"><thead><tr><th>Hạng</th><th>Người chơi</th><th>Đúng</th><th>Tổng câu</th><th>Điểm</th><th>Thời gian</th><th></th></tr></thead><tbody id="scoreTableBody"></tbody></table></div><div id="submissionDetail" class="submission-detail hidden"></div></section>
+      <section class="panel host-results hidden" id="hostResults"><div class="panel-heading"><div><span class="eyebrow">LIVE SCOREBOARD</span><h2>Bảng xếp hạng & bài làm</h2></div><span class="status-pill">Kết quả phòng</span></div><div class="table-scroll"><table class="score-table"><thead><tr><th>Hạng</th><th>Người chơi</th><th>Đúng</th><th>Tổng câu</th><th>Điểm</th><th>Hint</th><th>Thời gian</th><th></th></tr></thead><tbody id="scoreTableBody"></tbody></table></div><div id="submissionDetail" class="submission-detail hidden"></div></section>
       <button class="btn btn-light back-btn" id="backHomeBtn">← Về trang chủ</button>
     </section>
   </main>
