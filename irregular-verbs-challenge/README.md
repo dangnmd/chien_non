@@ -65,9 +65,13 @@ Anonymous Authentication tạo một Firebase user ẩn danh cho mỗi trình du
 
 Firestore có thể phát sinh chi phí theo lượt đọc/ghi và lưu trữ. Hãy kiểm tra usage và billing của Firebase project hiện tại trước khi chia sẻ rộng rãi. Không thay toàn bộ Firestore Rules hiện tại bằng file mẫu này nếu project đang có ứng dụng Chiên Con chạy production.
 
-## Resume bài kiểm tra (bản cập nhật)
-- Đáp án được tự động lưu vào `localStorage` trên trình duyệt mỗi khi người chơi nhập.
-- Khi mở lại website bằng cùng trình duyệt/tài khoản ẩn danh Firebase, website hỏi có muốn tiếp tục bản nháp cũ không.
-- Bản nháp lưu mã phòng, tên người chơi, bộ câu hỏi, câu trả lời và thời điểm lưu.
-- Bản nháp tự hết hạn sau 30 ngày; khi nộp bài thành công sẽ xóa bản nháp.
-- Khôi phục chỉ hoạt động trên cùng trình duyệt/thiết bị; dữ liệu local bị xóa hoặc đổi thiết bị thì không thể khôi phục bản nháp này.
+## 7. Cập nhật tính năng Word Bank và Hint
+
+- Word Bank được sắp xếp A–Z theo Verb 1.
+- Có ô tìm kiếm theo tiếng Việt hoặc các dạng động từ.
+- Checkbox chọn/bỏ chọn từ làm nguồn cho kỳ kiểm tra; mặc định chọn toàn bộ từ hiện có khi tải lần đầu.
+- Chủ phòng nhập số từ cần kiểm tra và số Hint cho mỗi người (0–100), mặc định 10.
+- Room lưu `selectedWordIds` và `hintLimit`. Các lượt random chỉ lấy trong các từ đã chọn.
+- Mỗi học viên có hạn mức Hint riêng. Một từ chỉ sử dụng Hint một lần. Hint bật mí ngẫu nhiên một trong những ô V1/V2/V3 còn trống và khóa ô đó.
+- Hint được lưu trong participant document (`hintsUsedWords`) để khôi phục nếu reload khi đang làm bài. Submission ghi số Hint và map từ được trợ giúp; chủ phòng xem số Hint ở bảng điểm và chi tiết bài.
+- Sử dụng Hint không trừ điểm đáp án; ô được bật mí vẫn tính theo đáp án đúng.

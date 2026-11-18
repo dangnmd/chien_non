@@ -16,7 +16,7 @@ const firebaseConfig = {
 };
 
 const $ = (id) => document.getElementById(id);
-const state = { auth:null, db:null, uid:null, roomCode:null, room:null, me:null, isHost:false, unsubRoom:null, unsubPeople:null, unsubWords:null, unsubScores:null, words:[], participants:[], submissions:[], submitted:false, quiz:[], resumeDraft:null };
+const state = { auth:null, db:null, uid:null, roomCode:null, room:null, me:null, isHost:false, unsubRoom:null, unsubPeople:null, unsubWords:null, unsubScores:null, words:[], participants:[], submissions:[], submitted:false, quiz:[], selectedWordIds:new Set(), wordSearch:"", selectionInitialized:false, hintsUsed:{}, draftAnswers:[], saveTimer:null };
 const WORDS = 'verbQuiz_words';
 const ROOMS = 'verbQuiz_rooms';
 const sampleWords = [
@@ -49,18 +49,22 @@ async function loadWords(){
   if(snap.empty){for(const w of sampleWords)await addDoc(collection(state.db,WORDS),{vi:w[0],v1:w[1],v2:w[2],v3:w[3],createdAt:serverTimestamp()})}
   if(state.unsubWords)state.unsubWords();
   state.unsubWords=onSnapshot(query(collection(state.db,WORDS),orderBy('vi')),(s)=>{
-    state.words=s.docs.map(d=>({id:d.id,...d.data()}));renderWords();
+    state.words=s.docs.map(d=>({id:d.id,...d.data()}));if(!state.selectionInitialized){state.words.forEach(w=>state.selectedWordIds.add(w.id));state.selectionInitialized=true}else{state.selectedWordIds=new Set([...state.selectedWordIds].filter(id=>state.words.some(w=>w.id===id)))}renderWords();
   },e=>{console.error(e);$('wordStatus').textContent='Không đọc được ngân hàng từ: '+e.message});
 }
 function renderWords(){
   $('wordCount').textContent=state.words.length+' từ';
-  $('wordTableBody').innerHTML=state.words.length?state.words.map(w=>`<tr><td>${escapeHtml(w.vi)}</td><td>${escapeHtml(w.v1)}</td><td>${escapeHtml(w.v2)}</td><td>${escapeHtml(w.v3)}</td><td><button class="delete-word" data-delete="${w.id}" title="Xóa từ">Xóa</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty-cell">Chưa có từ nào. Hãy thêm từ mới.</td></tr>';
+  const sorted=[...state.words].sort((a,b)=>String(a.v1||'').localeCompare(String(b.v1||''),'en',{sensitivity:'base'}));
+  const filtered=sorted.filter(w=>{const q=clean(state.wordSearch).toLocaleLowerCase();return !q||[w.vi,w.v1,w.v2,w.v3].some(x=>String(x||'').toLowerCase().includes(q))});
+  $('wordTableBody').innerHTML=filtered.length?filtered.map(w=>`<tr><td><input class="word-select" type="checkbox" data-word-select="${w.id}" ${state.selectedWordIds.has(w.id)?'checked':''} aria-label="Chọn ${escapeHtml(w.v1)}"></td><td>${escapeHtml(w.vi)}</td><td>${escapeHtml(w.v1)}</td><td>${escapeHtml(w.v2)}</td><td>${escapeHtml(w.v3)}</td><td><button class="delete-word" data-delete="${w.id}" title="Xóa từ">Xóa</button></td></tr>`).join(''):'<tr><td colspan="6" class="empty-cell">Không có từ phù hợp.</td></tr>';
+  updateWordSelectionSummary();
 }
+function updateWordSelectionSummary(){const n=state.selectedWordIds.size;$('selectionSummary').textContent=`Đã chọn ${n} từ`; $('selectedWordCount').textContent=`${n} từ đã chọn`; }
 
 async function addWord(){
   const w={vi:clean($('wordVi').value),v1:clean($('wordV1').value),v2:clean($('wordV2').value),v3:clean($('wordV3').value)};
   if(Object.values(w).some(v=>!v)){toast('Vui lòng nhập đủ 4 ô.');return}
-  try{await addDoc(collection(state.db,WORDS),{...w,createdAt:serverTimestamp()});['wordVi','wordV1','wordV2','wordV3'].forEach(id=>$(id).value='');$('wordVi').focus();toast('Đã thêm từ mới!')}
+  try{const added=await addDoc(collection(state.db,WORDS),{...w,createdAt:serverTimestamp()});state.selectedWordIds.add(added.id);['wordVi','wordV1','wordV2','wordV3'].forEach(id=>$(id).value='');$('wordVi').focus();toast('Đã thêm từ mới!')}
   catch(e){toast('Không thể thêm từ: '+e.message)}
 }
 async function deleteWord(id){if(!confirm('Bạn chắc chắn muốn xóa từ này khỏi ngân hàng?'))return;try{await deleteDoc(doc(state.db,WORDS,id));toast('Đã xóa từ.')}catch(e){toast('Không thể xóa: '+e.message)}}
@@ -74,16 +78,16 @@ async function importWords(file){
     if(file.name.toLowerCase().endsWith('.json')){const data=JSON.parse(text);rows=Array.isArray(data)?data.map(x=>({vi:x.vi||x.vn||'',v1:x.v1||'',v2:x.v2||'',v3:x.v3||''})):[]}
     else rows=parseWordText(text);
     rows=rows.filter(x=>clean(x.vi)&&clean(x.v1)&&clean(x.v2)&&clean(x.v3));if(!rows.length){toast('Không tìm thấy dòng hợp lệ.');return}
-    for(const w of rows)await addDoc(collection(state.db,WORDS),{...w,createdAt:serverTimestamp()});toast('Đã nhập '+rows.length+' từ.');
+    for(const w of rows){const added=await addDoc(collection(state.db,WORDS),{...w,createdAt:serverTimestamp()});state.selectedWordIds.add(added.id)}renderWords();toast('Đã nhập '+rows.length+' từ.');
   }catch(e){toast('Lỗi nhập dữ liệu: '+e.message)}finally{$('importWordsFile').value=''}
 }
 function exportWords(){const text=state.words.map(w=>`${w.vi}-${w.v1}-${w.v2}-${w.v3};`).join('\n');const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='words.txt';a.click();URL.revokeObjectURL(url)}
 
 async function createRoom(){
-  const name=clean($('hostName').value),count=Number($('questionCount').value);if(!name){toast('Nhập tên của bạn trước nhé.');return}if(!Number.isInteger(count)||count<1||count>100){toast('Số lượng từ phải từ 1 đến 100.');return}if(state.words.length<count){toast(`Ngân hàng hiện có ${state.words.length} từ, chưa đủ ${count} từ.`);return}
+  const name=clean($('hostName').value),count=Number($('questionCount').value),hintLimit=Number($('hintLimit').value),selectedIds=[...state.selectedWordIds];if(!name){toast('Nhập tên của bạn trước nhé.');return}if(!Number.isInteger(count)||count<1||count>100){toast('Số lượng từ phải từ 1 đến 100.');return}if(selectedIds.length<count){toast(`Bạn đã chọn ${selectedIds.length} từ, không đủ cho bài kiểm tra ${count} từ.`);return}if(!Number.isInteger(hintLimit)||hintLimit<0||hintLimit>100){toast('Số lượt trợ giúp phải từ 0 đến 100.');return}
   const btn=$('createRoomBtn');setBusy(btn,true,'Đang tạo phòng...');
   try{let code;for(let i=0;i<8;i++){code=randomCode();const exists=await getDoc(doc(state.db,ROOMS,code));if(!exists.exists())break;code=null}if(!code)throw new Error('Không tạo được mã phòng, vui lòng thử lại.');
-    await setDoc(doc(state.db,ROOMS,code),{code,hostUid:state.uid,hostName:name,questionCount:count,status:'waiting',createdAt:serverTimestamp()});
+    await setDoc(doc(state.db,ROOMS,code),{code,hostUid:state.uid,hostName:name,questionCount:count,hintLimit,selectedWordIds:selectedIds,status:'waiting',createdAt:serverTimestamp()});
     await setDoc(doc(state.db,ROOMS,code,'participants',state.uid),{uid:state.uid,name,role:'host',joinedAt:serverTimestamp(),submitted:false});
     enterRoom(code,true,name);
   }catch(e){console.error(e);toast('Tạo phòng thất bại: '+e.message)}finally{setBusy(btn,false)}
@@ -99,32 +103,8 @@ async function joinRoom(){
   }catch(e){toast(e.message)}finally{setBusy(btn,false)}
 }
 
-const draftKey = () => `verbQuiz_draft_${state.uid}`;
-function saveQuizDraft(){
-  if(!state.uid||!state.roomCode||!state.me?.name||!state.quiz.length||state.submitted)return;
-  const draft={roomCode:state.roomCode,playerName:state.me.name,quiz:state.quiz,answers:getAnswers(),savedAt:Date.now()};
-  try{localStorage.setItem(draftKey(),JSON.stringify(draft));$('draftStatus')?.replaceChildren(document.createTextNode('✓ Đã lưu trên thiết bị'));}catch(e){console.warn('Không lưu được bản nháp:',e)}
-}
-function restoreQuizDraft(){
-  const draft=state.resumeDraft;if(!draft||!Array.isArray(draft.answers))return;
-  draft.answers.forEach((a,i)=>['v1','v2','v3'].forEach(k=>{
-    const input=document.querySelector(`#quizTableBody input[data-answer="${i}"][data-field="${k}"]`);
-    if(input)input.value=a[k]||'';
-  }));
-  state.resumeDraft=null;updateProgress();saveQuizDraft();toast('Đã khôi phục câu trả lời trước đó.');
-}
-function offerResumeDraft(){
-  try{const raw=localStorage.getItem(draftKey());if(!raw)return;const draft=JSON.parse(raw);
-    if(!draft.roomCode||!draft.playerName||!Array.isArray(draft.quiz)||!draft.quiz.length)return;
-    const age=Date.now()-(draft.savedAt||0);if(age>30*24*60*60*1000){localStorage.removeItem(draftKey());return;}
-    if(confirm(`Bạn có bài kiểm tra chưa hoàn tất!\nPhòng: ${draft.roomCode}\nTên: ${draft.playerName}\nĐã lưu ${new Date(draft.savedAt).toLocaleString('vi-VN')}\n\nOK = tiếp tục bài cũ, Cancel = bỏ bản nháp.`)){
-      state.resumeDraft=draft;$('playerName').value=draft.playerName;$('roomCodeInput').value=draft.roomCode;joinRoom();
-    }else{localStorage.removeItem(draftKey());toast('Đã bỏ bản nháp bài kiểm tra.');}
-  }catch(e){console.warn('Draft recovery failed',e)}
-}
-
 function enterRoom(code,isHost,name){
-  cleanupRoomListeners();state.roomCode=code;state.isHost=isHost;state.me={uid:state.uid,name};state.submitted=false;state.quiz=[];
+  cleanupRoomListeners();state.roomCode=code;state.isHost=isHost;state.me={uid:state.uid,name};state.submitted=false;state.quiz=[];state.hintsUsed={};state.draftAnswers=[];
   $('roomCodeDisplay').textContent=code;$('roomModeLabel').textContent=isHost?'HOST ROOM':'PLAYER ROOM';$('roomTitle').textContent=isHost?'Phòng của '+name:'Chào '+name+'!';$('roomSubtitle').textContent='Mỗi người sẽ nhận một bộ từ ngẫu nhiên.';$('startQuizBtn').classList.toggle('hidden',!isHost);$('finishRoomBtn').classList.add('hidden');$('hostResults').classList.toggle('hidden',!isHost);$('hostNote').textContent=isHost?'Bạn là chủ phòng. Bấm “Bắt đầu kiểm tra” khi cả lớp đã sẵn sàng.':'Chia sẻ mã phòng với bạn bè và chờ chủ phòng bắt đầu.';
   showView('room');
   state.unsubRoom=onSnapshot(doc(state.db,ROOMS,code),async snap=>{if(!snap.exists()){toast('Phòng không còn tồn tại.');showView('home');return}state.room={id:snap.id,...snap.data()};renderRoomState();if(state.room.status==='active')await ensurePersonalQuiz();if(state.room.status==='finished')renderRoomState()},e=>toast('Lỗi theo dõi phòng: '+e.message));
@@ -144,19 +124,25 @@ function renderParticipants(){
 }
 async function finishRoom(){if(!state.isHost||!state.room)return;if(!confirm('Kết thúc phòng kiểm tra? Người chưa nộp bài sẽ không thể tiếp tục.'))return;try{await updateDoc(doc(state.db,ROOMS,state.roomCode),{status:'finished',finishedAt:serverTimestamp()});toast('Đã kết thúc phòng.')}catch(e){toast('Không thể kết thúc phòng: '+e.message)}}
 async function startQuiz(){
-  if(!state.isHost||!state.room)return;if(state.words.length<state.room.questionCount){toast('Ngân hàng từ hiện không đủ số lượng câu hỏi.');return}
+  if(!state.isHost||!state.room)return;const ids=state.room.selectedWordIds||[...state.selectedWordIds];if(state.words.filter(w=>ids.includes(w.id)).length<state.room.questionCount){toast('Nguồn từ được chọn không đủ số lượng câu hỏi.');return}
   try{await updateDoc(doc(state.db,ROOMS,state.roomCode),{status:'active',startedAt:serverTimestamp()});toast('Bài kiểm tra đã bắt đầu!')}catch(e){toast('Không thể bắt đầu: '+e.message)}
 }
 async function ensurePersonalQuiz(){
   if(state.submitted||state.quiz.length)return;
-  const ref=doc(state.db,ROOMS,state.roomCode,'participants',state.uid);const snap=await getDoc(ref);if(!snap.exists())return;const p=snap.data();
+  const ref=doc(state.db,ROOMS,state.roomCode,'participants',state.uid);const snap=await getDoc(ref);if(!snap.exists())return;const p=snap.data();state.hintsUsed=p.hintsUsedWords||{};const localDraft=loadLocalDraft();state.draftAnswers=Array.isArray(p.draftAnswers)&&p.draftAnswers.length?p.draftAnswers:(localDraft?.answers||[]);if(localDraft?.hintsUsed)state.hintsUsed={...state.hintsUsed,...localDraft.hintsUsed};
   if(p.submitted){state.submitted=true;state.quiz=p.questionSet||[];const sub=await getDoc(doc(state.db,ROOMS,state.roomCode,'submissions',state.uid));renderSavedResult(sub.exists()?sub.data():p);renderRoomState();return}
-  if(Array.isArray(p.questionSet)&&p.questionSet.length){state.quiz=p.questionSet;renderQuiz();restoreQuizDraft();renderRoomState();return}
-  const selected=shuffle(state.words).slice(0,state.room.questionCount).map(w=>({id:w.id,vi:w.vi,v1:w.v1,v2:w.v2,v3:w.v3}));
-  await updateDoc(ref,{questionSet:selected,quizCreatedAt:serverTimestamp()});state.quiz=selected;renderQuiz();restoreQuizDraft();renderRoomState();
+  if(Array.isArray(p.questionSet)&&p.questionSet.length){state.quiz=p.questionSet;state.draftAnswers=Array.isArray(p.draftAnswers)&&p.draftAnswers.length?p.draftAnswers:(localDraft?.answers||[]);state.hintsUsed={...(p.hintsUsedWords||{}),...(localDraft?.hintsUsed||{})};renderQuiz();renderRoomState();return}
+  const sourceIds=Array.isArray(state.room.selectedWordIds)?state.room.selectedWordIds:null;const source=sourceIds?state.words.filter(w=>sourceIds.includes(w.id)):state.words;const selected=shuffle(source).slice(0,state.room.questionCount).map(w=>({id:w.id,vi:w.vi,v1:w.v1,v2:w.v2,v3:w.v3}));
+  await updateDoc(ref,{questionSet:selected,quizCreatedAt:serverTimestamp(),draftAnswers:[]});state.quiz=selected;state.draftAnswers=[];renderQuiz();renderRoomState();saveLocalDraft();
 }
+function draftKey(){return state.uid&&state.roomCode?`verbQuiz_draft_${state.uid}_${state.roomCode}`:null}
+function collectDraftAnswers(){return state.quiz.map((word,i)=>{const row={};for(const k of ['v1','v2','v3']){const input=document.querySelector(`#quizTableBody input[data-answer="${i}"][data-field="${k}"]`);row[k]=input?input.value:(state.hintsUsed[word.id]===k?word[k]:'')}return row})}
+function saveLocalDraft(){const key=draftKey();if(!key||!state.quiz.length||state.submitted)return;const data={roomCode:state.roomCode,name:state.me?.name||'',uid:state.uid,answers:collectDraftAnswers(),hintsUsed:state.hintsUsed,quiz:state.quiz,updatedAt:Date.now()};try{localStorage.setItem(key,JSON.stringify(data));localStorage.setItem('verbQuiz_lastDraft',JSON.stringify({roomCode:state.roomCode,name:data.name,uid:state.uid,updatedAt:data.updatedAt}))}catch(e){console.warn('Không thể lưu bản nháp trên thiết bị:',e)}}
+function loadLocalDraft(){const key=draftKey();if(!key)return null;try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):null}catch{return null}}
+function scheduleDraftSave(){if(state.submitted)return;state.draftAnswers=collectDraftAnswers();saveLocalDraft();const status=$('draftSaveStatus');if(status)status.textContent='Đang lưu...';clearTimeout(state.saveTimer);state.saveTimer=setTimeout(async()=>{try{const ref=doc(state.db,ROOMS,state.roomCode,'participants',state.uid);await updateDoc(ref,{draftAnswers:state.draftAnswers,hintsUsedWords:state.hintsUsed,draftUpdatedAt:serverTimestamp()});if(status)status.textContent='✓ Đã lưu'}catch(e){console.warn('Firestore draft save failed:',e);if(status)status.textContent='Đã lưu trên thiết bị'}},500)}
+function offerResumeDraft(){try{const last=JSON.parse(localStorage.getItem('verbQuiz_lastDraft')||'null');if(!last||last.uid!==state.uid||Date.now()-last.updatedAt>30*24*60*60*1000)return;const key=`verbQuiz_draft_${state.uid}_${last.roomCode}`;if(!localStorage.getItem(key))return;if(confirm(`Bạn có bài kiểm tra chưa hoàn tất ở phòng ${last.roomCode}. Bạn có muốn tiếp tục không?`)){$('playerName').value=last.name||'';$('roomCodeInput').value=last.roomCode||'';joinRoom()}}catch(e){console.warn('Không thể kiểm tra bản nháp:',e)}}
 function renderQuiz(){
-  $('quizTableBody').innerHTML=state.quiz.map((w,i)=>`<tr data-row="${i}"><td>${i+1}</td><td>${escapeHtml(w.vi)}</td><td><input data-answer="${i}" data-field="v1" aria-label="${escapeHtml(w.vi)} verb 1" autocomplete="off"></td><td><input data-answer="${i}" data-field="v2" aria-label="${escapeHtml(w.vi)} verb 2" autocomplete="off"></td><td><input data-answer="${i}" data-field="v3" aria-label="${escapeHtml(w.vi)} verb 3" autocomplete="off"></td></tr>`).join('');updateProgress();
+  $('quizTableBody').innerHTML=state.quiz.map((w,i)=>`<tr data-row="${i}"><td>${i+1}</td><td>${escapeHtml(w.vi)}</td>${['v1','v2','v3'].map(k=>{const reveal=state.hintsUsed[w.id]===k;return `<td><input data-answer="${i}" data-field="${k}" aria-label="${escapeHtml(w.vi)} ${k}" autocomplete="off" ${reveal?'disabled value=\"'+escapeHtml(w[k])+'\" class=\"hint-revealed\"':''}></td>`}).join('')}<td><button class="hint-btn" data-hint="${i}" ${state.hintsUsed[w.id]||Number(state.room?.hintLimit||0)<=0?'disabled':''}>${state.hintsUsed[w.id]?'✓ Đã dùng':Number(state.room?.hintLimit||0)<=0?'Không có hint':'💡 Hint'}</button></td></tr>`).join('');renderHintMeter();updateProgress();
 }
 function updateProgress(){const inputs=[...document.querySelectorAll('#quizTableBody input')];const filled=inputs.filter(x=>clean(x.value)).length;const percent=inputs.length?Math.round(filled/inputs.length*100):0;$('progressText').textContent=`${filled/3|0} / ${state.quiz.length} từ đã điền ít nhất một ô`;$('progressPercent').textContent=percent+'%';$('progressBar').style.width=percent+'%'}
 function getAnswers() {
@@ -201,20 +187,24 @@ if (filledCount === 0) {
 }
   const details=answers.map(a=>({vi:a.word.vi,v1:a.v1,v2:a.v2,v3:a.v3,ok1:checkOne(a,'v1'),ok2:checkOne(a,'v2'),ok3:checkOne(a,'v3'),correct:{v1:a.word.v1,v2:a.word.v2,v3:a.word.v3}}));
   const correct=details.reduce((n,d)=>n+Number(d.ok1)+Number(d.ok2)+Number(d.ok3),0);const total=details.length*3;const correctWords=details.filter(d=>d.ok1&&d.ok2&&d.ok3).length;
-  const payload={uid:state.uid,name:state.me.name,details,correct,total,correctWords,totalWords:details.length,score:Math.round(correct/total*100),submittedAt:serverTimestamp()};
-  try{await setDoc(doc(state.db,state.roomCode?ROOMS:ROOMS,state.roomCode,'submissions',state.uid),payload);await updateDoc(doc(state.db,ROOMS,state.roomCode,'participants',state.uid),{submitted:true,score:payload.score,correct,total,submittedAt:serverTimestamp()});state.submitted=true;try{localStorage.removeItem(draftKey())}catch{}renderResult(payload);renderRoomState();toast('Đã nộp bài thành công!')}
+  const payload={uid:state.uid,name:state.me.name,details,correct,total,correctWords,totalWords:details.length,score:Math.round(correct/total*100),hintsUsed:Object.keys(state.hintsUsed).length,hintedWords:state.hintsUsed,submittedAt:serverTimestamp()};
+  try{await setDoc(doc(state.db,state.roomCode?ROOMS:ROOMS,state.roomCode,'submissions',state.uid),payload);await updateDoc(doc(state.db,ROOMS,state.roomCode,'participants',state.uid),{submitted:true,score:payload.score,correct,total,submittedAt:serverTimestamp()});state.submitted=true;try{await updateDoc(doc(state.db,ROOMS,state.roomCode,'participants',state.uid),{draftAnswers:[],draftCompletedAt:serverTimestamp()})}catch(e){console.warn('Could not clear Firestore draft:',e)}try{const key=draftKey();if(key)localStorage.removeItem(key);localStorage.removeItem('verbQuiz_lastDraft')}catch{}renderResult(payload);renderRoomState();toast('Đã nộp bài thành công!')}
   catch(e){console.error(e);toast('Nộp bài thất bại: '+e.message)}
 }
 function renderResult(data){
-  $('quizArea').classList.add('hidden');$('resultArea').classList.remove('hidden');$('resultArea').innerHTML=`<div class="result-title">🎉 Bạn đã hoàn thành bài kiểm tra!</div><div class="result-summary"><div class="result-stat"><strong>${data.score}%</strong><span>Điểm số</span></div><div class="result-stat"><strong>${data.correct}/${data.total}</strong><span>Đáp án đúng</span></div><div class="result-stat"><strong>${data.correctWords}/${data.totalWords}</strong><span>Từ đúng cả 3 dạng</span></div></div><p class="subtle">Đáp án sai được tô đỏ. Đáp án đúng được tô xanh.</p>${resultTable(data.details)}`;
+  $('quizArea').classList.add('hidden');$('resultArea').classList.remove('hidden');$('resultArea').innerHTML=`<div class="result-title">🎉 Bạn đã hoàn thành bài kiểm tra!</div><div class="result-summary"><div class="result-stat"><strong>${data.score}%</strong><span>Điểm số</span></div><div class="result-stat"><strong>${data.correct}/${data.total}</strong><span>Đáp án đúng</span></div><div class="result-stat"><strong>${data.correctWords}/${data.totalWords}</strong><span>Từ đúng cả 3 dạng</span></div></div><p class="subtle">Đáp án sai được tô đỏ. Đáp án đúng được tô xanh. 💡 Bạn đã dùng ${data.hintsUsed||0} lượt trợ giúp.</p>${resultTable(data.details)}`;
 }
 function resultTable(details){return `<div class="table-scroll"><table class="result-table"><thead><tr><th>Tiếng Việt</th><th>Verb 1</th><th>Verb 2</th><th>Verb 3</th></tr></thead><tbody>${details.map(d=>`<tr><td><b>${escapeHtml(d.vi)}</b></td>${['v1','v2','v3'].map(k=>`<td><div class="${d['ok'+k.slice(1)]?'good':'bad'}">${escapeHtml(d[k]||'—')} ${d['ok'+k.slice(1)]?'✓':'✗'}</div>${d['ok'+k.slice(1)]?'':`<small class="good">Đúng: ${escapeHtml(d.correct[k])}</small>`}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
 function renderSavedResult(p){renderResult({score:p.score||0,correct:p.correct||0,total:p.total||0,correctWords:p.correctWords||0,totalWords:p.totalWords||0,details:p.details||[]})}
 function renderScoreboard(){
   if(!state.isHost)return;const results=[...state.submissions].sort((a,b)=>(b.score||0)-(a.score||0)||(b.correct||0)-(a.correct||0));
-  $('scoreTableBody').innerHTML=results.length?results.map((s,i)=>`<tr><td>${i===0?'🏆':i+1}</td><td><b>${escapeHtml(s.name)}</b></td><td>${s.correct||0}</td><td>${s.total||0}</td><td><b>${s.score||0}%</b></td><td>${fmtDate(s.submittedAt)}</td><td><button data-submission="${s.uid}">Xem bài</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty-cell">Chưa có ai nộp bài.</td></tr>';
+  $('scoreTableBody').innerHTML=results.length?results.map((s,i)=>`<tr><td>${i===0?'🏆':i+1}</td><td><b>${escapeHtml(s.name)}</b></td><td>${s.correct||0}</td><td>${s.total||0}</td><td><b>${s.score||0}%</b></td><td>${s.hintsUsed||0}</td><td>${fmtDate(s.submittedAt)}</td><td><button data-submission="${s.uid}">Xem bài</button></td></tr>`).join(''):'<tr><td colspan="8" class="empty-cell">Chưa có ai nộp bài.</td></tr>';
 }
-async function showSubmission(uid){const s=state.submissions.find(x=>x.uid===uid);if(!s)return;$('submissionDetail').classList.remove('hidden');$('submissionDetail').innerHTML=`<h3>Bài làm của ${escapeHtml(s.name)}</h3><p class="subtle">${s.correct}/${s.total} đáp án đúng · ${s.score}%</p>${resultTable(s.details||[])}`;$('submissionDetail').scrollIntoView({behavior:'smooth',block:'start'})}
+async function showSubmission(uid){const s=state.submissions.find(x=>x.uid===uid);if(!s)return;$('submissionDetail').classList.remove('hidden');$('submissionDetail').innerHTML=`<h3>Bài làm của ${escapeHtml(s.name)}</h3><p class="subtle">${s.correct}/${s.total} đáp án đúng · ${s.score}% · 💡 ${s.hintsUsed||0} lượt trợ giúp</p>${resultTable(s.details||[])}`;$('submissionDetail').scrollIntoView({behavior:'smooth',block:'start'})}
 
-$('showCreate').addEventListener('click',()=>$('hostName').focus());$('showJoin').addEventListener('click',()=>$('playerName').focus());$('createRoomBtn').addEventListener('click',createRoom);$('joinRoomBtn').addEventListener('click',joinRoom);$('addWordBtn').addEventListener('click',addWord);$('exportWordsBtn').addEventListener('click',exportWords);$('importWordsFile').addEventListener('change',e=>{if(e.target.files[0])importWords(e.target.files[0])});$('wordTableBody').addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(b)deleteWord(b.dataset.delete)});$('startQuizBtn').addEventListener('click',startQuiz);$('finishRoomBtn').addEventListener('click',finishRoom);$('submitQuizBtn').addEventListener('click',submitQuiz);$('quizTableBody').addEventListener('input',()=>{updateProgress();saveQuizDraft()});window.addEventListener('beforeunload',saveQuizDraft);$('scoreTableBody').addEventListener('click',e=>{const b=e.target.closest('[data-submission]');if(b)showSubmission(b.dataset.submission)});$('copyRoomCode').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(state.roomCode);toast('Đã sao chép mã phòng!')}catch{toast('Mã phòng: '+state.roomCode)}});$('backHomeBtn').addEventListener('click',()=>{cleanupRoomListeners();state.roomCode=null;showView('home')});$('brandHome').addEventListener('click',e=>{e.preventDefault();cleanupRoomListeners();showView('home')});$('roomCodeInput').addEventListener('input',e=>e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6));
+
+function renderHintMeter(){const limit=Number(state.room?.hintLimit||0),used=Object.keys(state.hintsUsed).length,remaining=Math.max(0,limit-used);$('hintMeter').innerHTML=`💡 Lượt trợ giúp còn <b>${remaining}/${limit}</b> · Đã dùng ${used}`;}
+async function useHint(index){if(state.submitted)return;const word=state.quiz[index];if(!word||state.hintsUsed[word.id]){toast('Từ này đã dùng trợ giúp rồi.');return}const limit=Number(state.room?.hintLimit||0),used=Object.keys(state.hintsUsed).length;if(used>=limit){toast('Bạn đã hết lượt trợ giúp.');return}const available=['v1','v2','v3'].filter(k=>!clean(document.querySelector(`#quizTableBody input[data-answer=\"${index}\"][data-field=\"${k}\"]`)?.value));if(!available.length){toast('Bạn đã điền đủ 3 ô của từ này rồi.');return}const field=available[Math.floor(Math.random()*available.length)];state.hintsUsed[word.id]=field;const inp=document.querySelector(`#quizTableBody input[data-answer=\"${index}\"][data-field=\"${field}\"]`);if(inp){inp.value=word[field];inp.disabled=true;inp.classList.add('hint-revealed')}renderHintMeter();scheduleDraftSave();const participantRef=doc(state.db,ROOMS,state.roomCode,'participants',state.uid);try{await updateDoc(participantRef,{hintsUsedWords:state.hintsUsed});const btn=document.querySelector(`#quizTableBody button[data-hint=\"${index}\"]`);if(btn){btn.disabled=true;btn.textContent='✓ Đã dùng'}toast(`Hint: ${field.toUpperCase()} đã được bật mí!`)}catch(e){delete state.hintsUsed[word.id];if(inp){inp.value='';inp.disabled=false;inp.classList.remove('hint-revealed')}renderHintMeter();toast('Không lưu được hint: '+e.message)}}
+
+$('showCreate').addEventListener('click',()=>$('hostName').focus());$('showJoin').addEventListener('click',()=>$('playerName').focus());$('createRoomBtn').addEventListener('click',createRoom);$('joinRoomBtn').addEventListener('click',joinRoom);$('addWordBtn').addEventListener('click',addWord);$('exportWordsBtn').addEventListener('click',exportWords);$('importWordsFile').addEventListener('change',e=>{if(e.target.files[0])importWords(e.target.files[0])});$('wordTableBody').addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(b)deleteWord(b.dataset.delete)});$('wordTableBody').addEventListener('change',e=>{const c=e.target.closest('[data-word-select]');if(c){c.checked?state.selectedWordIds.add(c.dataset.wordSelect):state.selectedWordIds.delete(c.dataset.wordSelect);updateWordSelectionSummary()}});$('wordSearch').addEventListener('input',e=>{state.wordSearch=e.target.value;renderWords()});$('selectAllWords').addEventListener('click',()=>{state.words.forEach(w=>state.selectedWordIds.add(w.id));renderWords()});$('clearWordSelection').addEventListener('click',()=>{state.selectedWordIds.clear();renderWords()});$('startQuizBtn').addEventListener('click',startQuiz);$('finishRoomBtn').addEventListener('click',finishRoom);$('submitQuizBtn').addEventListener('click',submitQuiz);$('quizTableBody').addEventListener('input',()=>{updateProgress();scheduleDraftSave()});$('quizTableBody').addEventListener('click',e=>{const b=e.target.closest('[data-hint]');if(b)useHint(Number(b.dataset.hint));});$('scoreTableBody').addEventListener('click',e=>{const b=e.target.closest('[data-submission]');if(b)showSubmission(b.dataset.submission)});$('copyRoomCode').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(state.roomCode);toast('Đã sao chép mã phòng!')}catch{toast('Mã phòng: '+state.roomCode)}});$('backHomeBtn').addEventListener('click',()=>{cleanupRoomListeners();state.roomCode=null;showView('home')});$('brandHome').addEventListener('click',e=>{e.preventDefault();cleanupRoomListeners();showView('home')});$('roomCodeInput').addEventListener('input',e=>e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6));
 init();
